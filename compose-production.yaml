@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  database:
+    image: oracle/database:12.1.0.2-ee
+    volumes:
+      - db-data:/opt/oracle/oradata
+      - ./database/setup:/opt/oracle/scripts/setup
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    environment:
+      - ORACLE_PWD=DevPwd123
+    networks:
+      - db
+    healthcheck: # Script de healthcheck já é configurado no Dockerfile do banco de dados.
+      start_period: 10m
+      start_interval: 1s
+
+  backend:
+    image: curatela-backend
+    build:
+      context: ./backend
+      dockerfile: ./docker/production/Dockerfile
+    volumes:
+      - ./backend:/app
+      - ./database/anexos:/anexos
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env/production/env
+    networks:
+      - db
+      - web
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10m
+      start_period: 10m
+      start_interval: 1s
+    tty: true # Output colorido
+
+  frontend:
+    image: curatela-frontend
+    build:
+      context: ./frontend
+      dockerfile: ./docker/production/Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/angular.json:/app/angular.json
+      - ./frontend/package.json:/app/package.json
+      - ./frontend/package-lock.json:/app/package-lock.json
+      - ./frontend/tsconfig.app.json:/app/tsconfig.app.json
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/tsconfig.spec.json:/app/tsconfig.spec.json
+    ports:
+      - "80:80"
+    env_file:
+      - ./frontend/.env/production/env
+    networks:
+      - web
+    depends_on:
+      backend:
+        condition: service_healthy
+    tty: true # Output colorido
+
+volumes:
+  db-data: {}
+
+networks:
+  db: {}
+  web: {}

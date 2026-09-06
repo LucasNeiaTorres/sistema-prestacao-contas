@@ -1,0 +1,16 @@
+/*
+ * Força a cor branca no texto
+ *
+ * Problema:
+ * Por padrão, a cor do texto de um nav-item quando não selecionado é a cor primária.
+ * Entretanto, queremos que a sua cor seja preta.
+ * Quando forçamos a cor do texto para ser preta, assim que o nav-item fica selecionado,
+ * a cor do texto não muda para a cor branca.
+ *
+ * Solução:
+ * Quando selecionado, adicionamos a classe app-force-text-white no nav-item para forçar a
+ * cor do texto para branco.
+ */
+.app-force-text-white {
+    color: white !important;
+}

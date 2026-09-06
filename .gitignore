@@ -1,0 +1,40 @@
+# Segredos — nunca versionar.
+# `.env` casa arquivo E diretório; `!.env/` devolve o diretório de configuração,
+# senão os `env.example` de dentro dele seriam ignorados junto.
+.env
+!.env/
+*/.env/*/env
+
+# Oracle Instant Client (não redistribuível, ~55 MB cada)
+*.rpm
+
+# Dependências e artefatos de build
+node_modules/
+dist/
+backend/venv/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Banco local e anexos enviados
+backend/*.db
+backend/*.sqlite
+database/anexos/
+database/*.sso
+database/*.p12
+database/*.ora
+
+# Docker
+docker/*.log
+docker/*.pid
+docker-compose.override.yml
+
+# Editores
+.vscode/
+.idea/
+.DS_Store
+
+tmp/

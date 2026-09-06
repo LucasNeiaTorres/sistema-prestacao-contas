@@ -1,0 +1,270 @@
+<div class="p-4 pt-0 d-flex flex-column h-100 overflow-auto">
+  <div class="d-flex d-md-none flex-column sticky-top w-100">
+    <app-navbar
+      [pageTitle]="'Receitas'"
+      [actionButtonText]="'Nova Receita'"
+      (actionButtonClicked)="newReceita()"
+    ></app-navbar>
+  </div>
+  <!-- Content Mobile -->
+  <div
+    class="align-self-center w-100 d-flex d-md-none flex-column gap-4 align-items-center"
+    style="max-width: 35rem; margin-bottom: 5rem"
+  >
+    <div class="d-flex flex-column gap-1 align-items-center">
+      <h3 class="mb-0 fw-semibold lh-1">
+        {{ receitasTotal() | currency : "BRL" : "symbol" : "1.2-2" }}
+      </h3>
+      <div
+        class="bg-primary rounded-pill"
+        style="width: 33%; height: 5px"
+      ></div>
+    </div>
+    <div class="align-self-stretch d-flex flex-column">
+      <div *ngFor="let entry of groupedReceitas">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="fw-bold text-primary mb-0 fs-6">
+            {{ entry.month }}
+          </h5>
+          <span
+            class="badge bg-primary-subtle app-text-primary-emphasis fs-6 px-2 fw-semibold app-subtotal-month"
+            >{{ entry.subtotal | currency : "BRL" : "symbol" : "1.2-2" }}</span
+          >
+        </div>
+        <div class="mb-2">
+          <ng-container *ngFor="let receita of entry.receitas">
+            <div [id]="'mobile-' + receita.id">
+              <app-list-item
+                [config]="{
+                  date: receita.data,
+                  topLeftText: receita.descricao,
+                  bottonLeftText: receita.categoria,
+                  rightText:
+                    receita.valor | currency : 'BRL' : 'symbol' : '1.2-2',
+                  bottomBorder: receita !== entry.receitas.at(-1)
+                }"
+                (editEvent)="editReceita(receita)"
+                (deleteEvent)="modalDeleteReceita(receita)"
+              ></app-list-item>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-floating-buttom (clickEvent)="newReceita()"></app-floating-buttom>
+
+  <!-- Content Tablet/Desktop -->
+  <div
+    class="d-none d-md-flex flex-column sticky-top w-100 align-self-center"
+    style="max-width: 70rem"
+  >
+    <app-navbar
+      [pageTitle]="'Receitas'"
+      [actionButtonText]="'Nova Receita'"
+      (actionButtonClicked)="newReceita()"
+    ></app-navbar>
+  </div>
+  <div
+    class="d-none d-md-flex p-4 pt-0 pb-0 flex-column align-self-center w-100 align-items-center"
+    style="max-width: 70rem"
+  >
+    <div
+      class="d-flex flex-column gap-1 align-items-center"
+      style="padding-bottom: 2rem"
+    >
+      <h3 class="mb-0 fw-semibold lh-1">
+        {{ receitasTotal() | currency : "BRL" : "symbol" : "1.2-2" }}
+      </h3>
+      <div
+        class="bg-primary rounded-pill"
+        style="width: 33%; height: 5px"
+      ></div>
+    </div>
+    <div class="align-self-stretch" *ngFor="let entry of groupedReceitas">
+      <div [id]="'group-' + entry.month">
+        <div class="pb-4">
+          <app-collapse [(collapsed)]="entry.collapsed">
+            <div appCollapseHeader>
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-primary mb-0">
+                  {{ entry.month }}
+                </h5>
+                <span
+                  class="badge bg-primary-subtle app-text-primary-emphasis fs-5 px-2 fw-semibold app-subtotal-month"
+                  >{{
+                    entry.subtotal | currency : "BRL" : "symbol" : "1.2-2"
+                  }}</span
+                >
+              </div>
+            </div>
+            <div appCollapseBody>
+              <ng-container *ngFor="let receita of entry.receitas">
+                <div [id]="'desktop-tablet-' + receita.id">
+                  <app-list-item
+                    [config]="{
+                      date: receita.data,
+                      topLeftText: receita.descricao,
+                      bottonLeftText: receita.categoria,
+                      rightText:
+                        receita.valor | currency : 'BRL' : 'symbol' : '1.2-2',
+                      bottomBorder: receita !== entry.receitas.at(-1)
+                    }"
+                    (editEvent)="editReceita(receita)"
+                    (deleteEvent)="modalDeleteReceita(receita)"
+                  ></app-list-item>
+                </div>
+              </ng-container>
+            </div>
+          </app-collapse>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offcanvas -->
+  <app-offcanvas #offcanvas>
+    <div appOffcanvasHeader>
+      <div class="d-flex justify-content-between w-100">
+        <h4 class="offcanvas-title">
+          {{ receitaToEdit ? "Editar Receita" : "Nova Receita" }}
+        </h4>
+        <div class="d-flex gap-2">
+          <button
+            *ngIf="receitaToEdit"
+            class="btn btn-danger fw-semibold px-2 py-1"
+            (click)="modalDeleteReceita(receitaToEdit)"
+          >
+            <i class="bi bi-trash" style="font-size: 1.25rem"></i>
+          </button>
+          <input
+            class="btn btn-primary fw-semibold"
+            type="submit"
+            value="Salvar"
+            ngbAutofocus
+            (click)="offcanvas.closeOffcanvas(); onSubmit()"
+          />
+        </div>
+      </div>
+    </div>
+    <div appOffcanvasBody>
+      <form [formGroup]="formReceita">
+        <div class="d-flex flex-column gap-3">
+          <div class="input-group">
+            <span class="app-input-group-icon" id="date-icon"
+              ><i class="bi bi-calendar"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="date"
+                class="form-control app-input-date"
+                id="date"
+                aria-describedby="date-icon"
+                formControlName="data"
+              />
+              <label for="date">Data</label>
+            </div>
+          </div>
+          <div class="input-group">
+            <span class="app-input-group-icon" id="description-icon"
+              ><i class="bi bi-card-text"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                placeholder="Descrição"
+                aria-label="Descrição"
+                aria-describedby="description-icon"
+                formControlName="descricao"
+              />
+              <label for="description">Descrição</label>
+            </div>
+          </div>
+          <div class="input-group">
+            <span class="app-input-group-icon" id="value-icon"
+              ><i class="bi bi-currency-dollar"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                id="value"
+                placeholder="Valor"
+                aria-label="Valor"
+                aria-describedby="value-icon"
+                formControlName="valor"
+                appCurrencyMask
+              />
+              <label for="value">Valor</label>
+            </div>
+          </div>
+          <div class="input-group">
+            <span class="app-input-group-icon" id="value-icon"
+              ><i class="bi bi-folder2-open"></i
+            ></span>
+            <div class="form-floating">
+              <select
+                id="categoria"
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="categoria"
+              >
+                <option selected [ngValue]="null">Selecione</option>
+                <option value="Benefício Previdenciário">
+                  Benefício Previdenciário
+                </option>
+                <option value="Transferência entre Contas">
+                  Transferência entre Contas
+                </option>
+                <option value="Aplicações Financeiras">
+                  Aplicações Financeiras
+                </option>
+              </select>
+              <label for="categoria">Categoria</label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </app-offcanvas>
+</div>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Confirmar Remoção</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Deseja remover o item atual?</strong>
+    </p>
+    <p>
+      Toda a informação relacionada a este item será removida.
+      <span class="text-danger">Essa operação é irreversível.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary fw-semibold"
+      ngbAutofocus
+      (click)="modal.dismiss('Cancelar')"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger fw-semibold"
+      (click)="modal.close('Remover')"
+    >
+      Remover
+    </button>
+  </div>
+</ng-template>

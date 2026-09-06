@@ -1,0 +1,29 @@
+<div class="d-flex flex-column gap-3">
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      [formControl]="hasAnexoControl"
+    />
+    <label class="form-check-label" for="attachCheck">
+      Não possuo anexos
+    </label>
+  </div>
+  <app-dropzone [hidden]="!hasAnexo" [control]="dropzoneControl"></app-dropzone>
+  <div class="form-floating" [hidden]="hasAnexo">
+    <textarea
+      class="form-control"
+      placeholder="Leave a comment here"
+      id="justificativa"
+      style="height: 7rem"
+      [formControl]="justificativaControl"
+      maxlength="1024"
+    ></textarea>
+    <label for="justificativa" class="text-secondary lh-sm"
+      >Justificativa
+    </label>
+    <div class="form-text d-flex justify-content-end">
+      {{ justificativaWordCount }}/1024
+    </div>
+  </div>
+</div>

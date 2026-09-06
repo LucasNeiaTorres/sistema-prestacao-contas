@@ -1,0 +1,552 @@
+<div class="p-4 pt-0 d-flex flex-column h-100 overflow-auto">
+  <div class="d-flex d-md-none flex-column sticky-top w-100">
+    <app-navbar
+      [pageTitle]="'Receitas'"
+      [actionButtonText]="'Nova Receita'"
+      (actionButtonClicked)="onNewReceita()"
+    ></app-navbar>
+  </div>
+  <!-- Content Mobile -->
+  <div
+    class="align-self-center w-100 d-flex d-md-none flex-column flex-fill gap-4 align-items-center"
+    style="max-width: 35rem; margin-bottom: 6rem"
+  >
+    <ng-container
+      *ngIf="!loading.isFetchingInitialReceitas && receitas.meses.length > 0"
+    >
+      <div class="d-flex flex-column gap-1 align-items-center">
+        <h3 class="mb-0 fw-semibold lh-1">
+          {{ receitas.total | currency : "BRL" : "symbol" : "1.2-2" }}
+        </h3>
+        <div
+          class="bg-primary rounded-pill"
+          style="width: 33%; height: 5px"
+        ></div>
+      </div>
+      <div class="align-self-stretch d-flex flex-column">
+        <div *ngFor="let entry of receitas.meses">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-primary mb-0 fs-6">
+              {{ entry.mes }}
+            </h5>
+            <span
+              class="badge bg-primary-subtle app-text-primary-emphasis fs-6 px-2 fw-semibold app-subtotal-month"
+              >{{
+                entry.subtotal | currency : "BRL" : "symbol" : "1.2-2"
+              }}</span
+            >
+          </div>
+          <div class="mb-2">
+            <ng-container *ngFor="let receita of entry.items">
+              <div [id]="'mobile-' + receita.receita_id">
+                <app-list-item
+                  [config]="{
+                    date: receita.data,
+                    topLeftText: receita.descricao,
+                    bottonLeftText: getCategoriaName(
+                      receita.receita_categoria_id
+                    ),
+                    rightText:
+                      receita.valor | currency : 'BRL' : 'symbol' : '1.2-2',
+                    bottomBorder: receita !== entry.items.at(-1)
+                  }"
+                  (editEvent)="onEditReceita(receita)"
+                  (deleteEvent)="onDeleteReceita(receita)"
+                ></app-list-item>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="loading.isFetchingInitialReceitas">
+      <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container
+      *ngIf="!loading.isFetchingInitialReceitas && receitas.meses.length === 0"
+    >
+      <div
+        class="d-flex flex-fill flex-column align-items-center justify-content-center gap-5 animate__animated animate__fadeIn"
+      >
+        <app-sem-receitas-svg></app-sem-receitas-svg>
+        <div
+          class="d-flex flex-column align-items-center justify-content-center gap-1"
+        >
+          <h4 class="fw-semibold">Sem Receitas!</h4>
+          <small class="text-center text-muted px-5">
+            Pressione o botão
+            <span class="badge bg-primary rounded-circle text-bg-primary p-0">
+              <i class="bi bi-plus app-fs-7"></i>
+            </span>
+            <!-- <span class="fw-semibold text-primary fs-6">+</span> -->
+            para criar uma nova receita.
+          </small>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <app-floating-buttom (clickEvent)="onNewReceita()"></app-floating-buttom>
+
+  <!-- Content Tablet/Desktop -->
+  <div
+    class="d-none d-md-flex flex-column sticky-top w-100 align-self-center"
+    style="max-width: 70rem"
+  >
+    <app-navbar
+      [pageTitle]="'Receitas'"
+      [actionButtonText]="'Nova Receita'"
+      [loading]="loading.isFetchingInitialReceitas"
+      (actionButtonClicked)="onNewReceita()"
+    ></app-navbar>
+  </div>
+  <div
+    class="d-none flex-fill d-md-flex p-4 pt-0 pb-0 flex-column align-self-center w-100 align-items-center"
+    style="max-width: 70rem"
+  >
+    <ng-container
+      *ngIf="!loading.isFetchingInitialReceitas && receitas.meses.length > 0"
+    >
+      <div
+        class="d-flex flex-column gap-1 align-items-center"
+        style="padding-bottom: 2rem"
+      >
+        <h3 class="mb-0 fw-semibold lh-1">
+          {{ receitas.total | currency : "BRL" : "symbol" : "1.2-2" }}
+        </h3>
+        <div
+          class="bg-primary rounded-pill"
+          style="width: 33%; height: 5px"
+        ></div>
+      </div>
+      <div class="align-self-stretch" *ngFor="let entry of receitas.meses">
+        <div [id]="'group-' + entry.mes">
+          <div class="pb-4">
+            <app-collapse [(collapsed)]="collapsedMeses[entry.mes]">
+              <div appCollapseHeader>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="fw-bold text-primary mb-0">
+                    {{ entry.mes }}
+                  </h5>
+                  <span
+                    class="badge bg-primary-subtle app-text-primary-emphasis fs-5 px-2 fw-semibold app-subtotal-month"
+                    >{{
+                      entry.subtotal | currency : "BRL" : "symbol" : "1.2-2"
+                    }}</span
+                  >
+                </div>
+              </div>
+              <div appCollapseBody>
+                <ng-container *ngFor="let receita of entry.items">
+                  <div [id]="'desktop-tablet-' + receita.receita_id">
+                    <app-list-item
+                      [config]="{
+                        date: receita.data,
+                        topLeftText: receita.descricao,
+                        bottonLeftText: getCategoriaName(
+                          receita.receita_categoria_id
+                        ),
+                        rightText:
+                          receita.valor | currency : 'BRL' : 'symbol' : '1.2-2',
+                        bottomBorder: receita !== entry.items.at(-1)
+                      }"
+                      (editEvent)="onEditReceita(receita)"
+                      (deleteEvent)="onDeleteReceita(receita)"
+                    ></app-list-item>
+                  </div>
+                </ng-container>
+              </div>
+            </app-collapse>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="loading.isFetchingInitialReceitas">
+      <div
+        class="d-flex flex-column gap-1 align-items-center"
+        style="padding-bottom: 2rem"
+      >
+        <div class="placeholder-glow">
+          <h3
+            class="mb-0 fw-semibold lh-1 placeholder text-secondary rounded"
+            aria-hidden="true"
+          >
+            oooooooooo
+          </h3>
+        </div>
+        <div
+          class="bg-primary rounded-pill"
+          style="width: 33%; height: 5px"
+        ></div>
+      </div>
+      <div class="align-self-stretch">
+        <app-collapse [collapsed]="false" [loading]="true">
+          <div appCollapseHeader>
+            <div
+              class="d-flex justify-content-between align-items-center placeholder-glow"
+            >
+              <h5
+                class="bg-primary placeholder placeholder-lg rounded col-2"
+              ></h5>
+              <h3
+                class="bg-primary-subtle app-subtotal-month placeholder placeholder-lg rounded col-2"
+              ></h3>
+            </div>
+          </div>
+          <div appCollapseBody>
+            <app-list-item
+              [loading]="true"
+              [config]="{ bottomBorder: true }"
+            ></app-list-item>
+            <app-list-item
+              [loading]="true"
+              [config]="{ bottomBorder: false }"
+            ></app-list-item>
+          </div>
+        </app-collapse>
+        <div class="pb-4"></div>
+        <app-collapse [collapsed]="false" [loading]="true">
+          <div appCollapseHeader>
+            <div
+              class="d-flex justify-content-between align-items-center placeholder-glow"
+            >
+              <h5
+                class="bg-primary placeholder placeholder-lg rounded col-2"
+              ></h5>
+              <h3
+                class="bg-primary-subtle app-subtotal-month placeholder placeholder-lg rounded col-2"
+              ></h3>
+            </div>
+          </div>
+          <div appCollapseBody>
+            <app-list-item
+              [loading]="true"
+              [config]="{ bottomBorder: false }"
+            ></app-list-item>
+          </div>
+        </app-collapse>
+        <div class="pb-4"></div>
+        <app-collapse [collapsed]="false" [loading]="true">
+          <div appCollapseHeader>
+            <div
+              class="d-flex justify-content-between align-items-center placeholder-glow"
+            >
+              <h5
+                class="bg-primary placeholder placeholder-lg rounded col-2"
+              ></h5>
+              <h3
+                class="bg-primary-subtle app-subtotal-month placeholder placeholder-lg rounded col-2"
+              ></h3>
+            </div>
+          </div>
+          <div appCollapseBody>
+            <app-list-item
+              [loading]="true"
+              [config]="{ bottomBorder: true }"
+            ></app-list-item>
+            <app-list-item
+              [loading]="true"
+              [config]="{ bottomBorder: true }"
+            ></app-list-item>
+            <app-list-item
+              [loading]="true"
+              [config]="{ bottomBorder: false }"
+            ></app-list-item>
+          </div>
+        </app-collapse>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="!loading.isFetchingInitialReceitas && receitas.meses.length === 0"
+    >
+      <div
+        class="d-flex flex-fill flex-column align-items-center justify-content-center gap-5"
+        style="padding-bottom: 5rem"
+      >
+        <app-sem-receitas-svg width="500"></app-sem-receitas-svg>
+        <div
+          class="d-flex flex-column align-items-center justify-content-center gap-1 animate__animated animate__fadeIn"
+        >
+          <h3 class="fw-semibold">Sem receitas cadastradas!</h3>
+          <span class="text-center text-muted lh-sm px-5">
+            Crie uma nova receita clicando em ‘+ Nova Receita’
+          </span>
+          <button
+            class="btn btn-primary px-3 fw-semibold mt-4"
+            (click)="onNewReceita()"
+          >
+            <span class="me-2">+</span>Nova Receita
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Offcanvas -->
+  <app-offcanvas #offcanvas>
+    <div appOffcanvasHeader>
+      <div class="d-flex justify-content-between w-100">
+        <h4 class="offcanvas-title">
+          {{
+            estadoReceitaOffcanvas.modo == "editar"
+              ? "Editar Receita"
+              : "Nova Receita"
+          }}
+        </h4>
+        <div class="d-flex gap-2">
+          <button
+            *ngIf="estadoReceitaOffcanvas.modo == 'editar'"
+            class="btn btn-danger fw-semibold px-2 py-1"
+            (click)="onDeleteReceita(estadoReceitaOffcanvas.receita)"
+          >
+            <i class="bi bi-trash" style="font-size: 1.25rem"></i>
+          </button>
+          <ng-container *ngIf="!loading.isSavingReceita; else savingReceita">
+            <input
+              class="btn btn-primary fw-semibold"
+              type="submit"
+              value="Salvar"
+              ngbAutofocus
+              (click)="onSaveReceita()"
+            />
+          </ng-container>
+          <ng-template #savingReceita>
+            <button class="btn btn-primary fw-semibold" type="button" disabled>
+              <span
+                class="spinner-border spinner-border-sm mx-3"
+                aria-hidden="true"
+              >
+              </span>
+              <span class="visually-hidden" role="status">Salvando...</span>
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div appOffcanvasBody>
+      <form [formGroup]="estadoReceitaOffcanvas.form">
+        <div class="d-flex flex-column gap-3">
+          <div class="input-group d-flex">
+            <span
+              class="app-input-group-icon align-self-start"
+              style="padding-top: 0.8125rem; padding-bottom: 0.8125rem"
+              id="date-icon"
+              ><i class="bi bi-calendar"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="date"
+                class="form-control app-input-date"
+                id="date"
+                aria-describedby="date-icon"
+                formControlName="data"
+                [ngClass]="{
+                  'is-invalid':
+                    estadoReceitaOffcanvas.form.get('data').invalid &&
+                    estadoReceitaOffcanvas.form.get('data').touched
+                }"
+              />
+              <label for="date">Data</label>
+              <div class="invalid-feedback">
+                Por favor, insira uma data válida.
+              </div>
+            </div>
+          </div>
+          <div class="input-group d-flex">
+            <span
+              class="app-input-group-icon align-self-start"
+              id="description-icon"
+              style="padding-top: 0.8125rem; padding-bottom: 0.8125rem"
+              ><i class="bi bi-card-text"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                id="description"
+                placeholder="Descrição"
+                aria-label="Descrição"
+                aria-describedby="description-icon"
+                formControlName="descricao"
+                maxlength="255"
+                [ngClass]="{
+                  'is-invalid':
+                    estadoReceitaOffcanvas.form.get('descricao').invalid &&
+                    estadoReceitaOffcanvas.form.get('descricao').touched
+                }"
+              />
+              <label for="description">Descrição</label>
+              <div class="invalid-feedback">
+                Por favor, insira uma descrição válida.
+              </div>
+            </div>
+          </div>
+          <div class="input-group d-flex">
+            <span
+              class="app-input-group-icon align-self-start"
+              id="value-icon"
+              style="padding-top: 0.8125rem; padding-bottom: 0.8125rem"
+              ><i class="bi bi-currency-dollar"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                id="value"
+                placeholder="Valor"
+                aria-label="Valor"
+                aria-describedby="value-icon"
+                formControlName="valor"
+                appCurrencyMask
+                [ngClass]="{
+                  'is-invalid':
+                    estadoReceitaOffcanvas.form.get('valor').invalid &&
+                    estadoReceitaOffcanvas.form.get('valor').touched
+                }"
+              />
+              <label for="value">Valor</label>
+              <div class="invalid-feedback">
+                Por favor, insira um valor válido.
+              </div>
+            </div>
+          </div>
+          <div class="input-group d-flex">
+            <span
+              class="app-input-group-icon align-self-start"
+              id="value-icon"
+              style="padding-top: 0.8125rem; padding-bottom: 0.8125rem"
+              ><i class="bi bi-folder2-open"></i
+            ></span>
+            <div class="form-floating">
+              <select
+                id="categoria"
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="categoria"
+                [ngClass]="{
+                  'is-invalid':
+                    estadoReceitaOffcanvas.form.get('categoria').invalid &&
+                    estadoReceitaOffcanvas.form.get('categoria').touched
+                }"
+              >
+                <option selected [ngValue]="null">Selecione</option>
+                <option
+                  *ngFor="let categoria of categorias"
+                  [ngValue]="categoria.receita_categoria_id"
+                >
+                  {{ categoria.receita_categoria }}
+                </option>
+              </select>
+              <label for="categoria">Categoria</label>
+              <div class="invalid-feedback">
+                Por favor, selecione uma categoria.
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="d-flex align-items-center gap-3 mt-3 mb-3">
+        <hr class="flex-fill text-secondary" />
+        <span class="text-secondary">Anexos</span>
+        <hr class="flex-fill text-secondary" />
+      </div>
+
+      <app-anexo-opcional
+        [dropzoneControl]="estadoReceitaOffcanvas.dropzoneControl"
+        [justificativa]="estadoReceitaOffcanvas.justificativa"
+        (justificativaChange)="onJustificativaChange($event)"
+        [hasAnexo]="estadoReceitaOffcanvas.hasAnexo"
+        (hasAnexoChange)="onHasAnexoChange($event)"
+      ></app-anexo-opcional>
+    </div>
+  </app-offcanvas>
+</div>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Confirmar Remoção</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Deseja remover o item atual?</strong>
+    </p>
+    <p>
+      Toda a informação relacionada a este item será removida.
+      <span class="text-danger">Essa operação é irreversível.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary fw-semibold"
+      ngbAutofocus
+      (click)="onCloseModal('Cancelar')"
+    >
+      Cancelar
+    </button>
+    <ng-container *ngIf="!loading.isDeletingReceita; else cancelDeleting">
+      <button
+        type="button"
+        class="btn btn-danger fw-semibold"
+        (click)="onCloseModal('Prosseguir')"
+      >
+        Remover
+      </button>
+    </ng-container>
+    <ng-template #cancelDeleting>
+      <button type="button" class="btn btn-danger fw-semibold" disabled>
+        <span
+          class="spinner-border spinner-border-sm mx-4"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <span class="visually-hidden">Deletando...</span>
+      </button>
+    </ng-template>
+  </div>
+</ng-template>
+
+<ng-template #warningModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Ações Pendentes</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Você ainda tem ações pendentes.</strong>
+    </p>
+    <p>Tem certeza que deseja sair sem salvar as alterações?</p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary fw-semibold"
+      ngbAutofocus
+      (click)="onCloseModal('Cancelar')"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary fw-semibold"
+      (click)="onCloseModal('Prosseguir')"
+    >
+      Sair
+    </button>
+  </div>
+</ng-template>

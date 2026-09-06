@@ -1,0 +1,218 @@
+<div class="h-100 overflow-auto px-4">
+  <div class="sticky-top">
+    <app-navbar
+      [pageTitle]="'Selecionar Prestação'"
+      [actionButtonText]="'Nova Prestação'"
+      (actionButtonClicked)="onNovaPrestacao()"
+      [loading]="isLoading"
+      [showSearchButtons]="false"
+    ></app-navbar>
+  </div>
+  <div
+    *ngIf="this.prestacoes.length === 0 && !isLoading"
+    class="d-flex flex-fill flex-column align-items-center justify-content-center gap-5 animate__animated animate__fadeIn"
+  >
+    <div class="d-none d-md-block">
+      <app-sem-prestacao-svg width="500"></app-sem-prestacao-svg>
+      <div class="d-flex flex-column align-items-center justify-content-center gap-1 animate__animated animate__fadeIn">
+        <h3 class="fw-semibold">Sem prestações cadastradas!</h3>
+        <span class="text-center text-muted lh-sm px-5">
+          Crie uma nova prestação clicando em ‘+ Nova Prestação’
+        </span>
+        <button
+          class="btn btn-primary px-3 fw-semibold mt-4"
+          (click)="onNovaPrestacao()"
+        >
+          <span class="me-2">+</span>Nova Prestação
+        </button>
+      </div>
+    </div>
+    <div class="d-md-none">
+      <app-sem-prestacao-svg></app-sem-prestacao-svg>
+      <div
+        class="d-flex flex-column align-items-center justify-content-center gap-1 animate__animated animate__fadeIn"
+      >
+        <h4 class="fw-semibold">Sem Prestação!</h4>
+        <small class="text-center text-muted px-5">
+          Pressione o botão
+          <span class="badge bg-primary rounded-circle text-bg-primary p-0">
+            <i class="bi bi-plus app-fs-7"></i>
+          </span>
+          para criar uma nova prestação.
+        </small>
+      </div>
+    </div>
+  </div>
+    <div class="d-flex flex-column px-2">
+      <div *ngFor="let curatelado of prestacoes; let i = index">
+        <button
+          class="curatelado-nome nav-link py-3 app-collapse-button-end d-flex flex-row placeholder-glow col-12 gap-4"
+          (click)="isCollapsed[i] = !isCollapsed[i]"
+          [ngClass]="{
+            'pt-0': i == 0
+          }"
+          [attr.aria-expanded]="!isCollapsed[i]"
+          aria-controls="collapseExample"
+        >
+          <div
+            class="d-flex gap-3 align-items-center rounded-4"
+            [ngClass]="{
+              placeholder: isLoading
+            }"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="var(--bs-dark-rgb)"
+              class="bi bi-chevron-up app-collapse-chevron"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"
+              />
+            </svg>
+            <h4 class="fw-semibold mb-0">
+              {{ curatelado.nomeCuratelado }}
+            </h4>
+          </div>
+        </button>
+        <div [ngbCollapse]="isCollapsed[i]">
+          <div class="row px-1 pt-1">
+            <div
+              class="col-xl-4 col-12 col-sm-6 mb-4"
+              *ngFor="let prestacao of prestacoesCuratelado(curatelado)"
+            >
+              <div
+                class="card app-shadow app-anima-shadow border-0 app-text-gray-800 placeholder-glow"
+                [id]="prestacao.prestacao_id"
+              >
+                <div
+                  class="card-header d-flex p-3 justify-content-between align-items-center"
+                >
+                  <div
+                    class="app-bola"
+                    [ngClass]="{
+                      placeholder: isLoading
+                    }"
+                    [ngStyle]="{
+                      'background-color':
+                        prestacao.numero_pendencias == 0 ? '#28A745' : '#DC3545'
+                    }"
+                  ></div>
+                  <h6
+                    class="text-center mb-0 text-nowrap rounded-3"
+                    [ngClass]="{
+                      placeholder: isLoading
+                    }"
+                  >
+                    {{ prestacao.data_inicial | date : "dd/MM/yyyy" }} -
+                    {{ prestacao.data_final | date : "dd/MM/yyyy" }}
+                  </h6>
+                  <div
+                    ngbDropdown
+                    [placement]="'bottom-end'"
+                    class="d-inline-block"
+                  >
+                    <button
+                      type="button"
+                      class="bi bi-three-dots-vertical btn p-0"
+                      [ngClass]="{ 'opacity-0': isLoading }"
+                      ngbDropdownToggle
+                    ></button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <button
+                        ngbDropdownItem
+                        (click)="onEditarPrestacao(prestacao)"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        ngbDropdownItem
+                        (click)="onExcluirPrestacao(prestacao)"
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card-body px-4 app-py-2-5 d-inline-flex flex-column align-items-start"
+                >
+                  <span
+                    class="card-text mb-0 rounded-2"
+                    *ngIf="prestacao.numero_pendencias > 0"
+                    [ngClass]="{
+                      placeholder: isLoading
+                    }"
+                  >
+                    {{ prestacao.numero_pendencias }} pendência<span
+                      *ngIf="prestacao.numero_pendencias > 1"
+                      >s</span
+                    >
+                  </span>
+                  <span
+                    class="card-text mb-0"
+                    *ngIf="prestacao.numero_pendencias == 0"
+                  >
+                    Sem pendências
+                  </span>
+                  <h6
+                    class="card-text my-3 fw-semibold rounded-2"
+                    [ngClass]="{
+                      placeholder: isLoading
+                    }"
+                  >
+                    Saldo Final:
+                    <span
+                      [ngStyle]="{
+                        color: isLoading
+                          ? ''
+                          : prestacao.saldo_final >= 0
+                          ? '#28A745'
+                          : '#DC3545'
+                      }"
+                    >
+                      {{ prestacao.saldo_final | currency : "BRL" }}
+                    </span>
+                  </h6>
+                  <a
+                    href="#"
+                    class="btn btn-primary fw-semibold col-12"
+                    [ngClass]="{
+                      'disabled placeholder': isLoading
+                    }"
+                    (click)="
+                      onPrestar(
+                        prestacao.prestacao_id,
+                        curatelado.nomeCuratelado,
+                        prestacao.data_inicial
+                      )
+                    "
+                    routerLink="/receitas"
+                    >{{ isLoading ? "" : "Prestar Contas" }}</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-floating-buttom
+      class="d-md-none"
+      (clickEvent)="onNovaPrestacao()"
+    ></app-floating-buttom>
+  </div>
+
+  <!-- TODO:
+  - [x] muda roundeds
+  - [x] coloca nomes no meio mobile
+  - [x] coloca prestacao storage
+  - [x] menu de ações
+  - [ ] aplicar no sidebar
+  - [ ] novo e editar prestacao
+  - [ ] calculo do saldo e das pendencias
+  - [ ] arruma navbar mobile
+ -->

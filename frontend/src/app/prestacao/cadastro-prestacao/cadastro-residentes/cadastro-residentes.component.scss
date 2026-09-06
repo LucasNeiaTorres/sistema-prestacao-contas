@@ -1,0 +1,42 @@
+@keyframes app-maximize-animation {
+    0% {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+    }
+    100% {
+        opacity: 1;
+        max-height: 5rem;
+        overflow: hidden;
+    }
+}
+
+@keyframes app-minimize-animation {
+    0% {
+      opacity: 1;
+      max-height: 17rem;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    100% {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+}
+
+.app-maximize-animation {
+    animation: app-maximize-animation 0.1s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.app-minimize-animation {
+    animation: app-minimize-animation 0.3s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+// 95, 58, 198 é a cor do hover do botão
+a:active {
+    color: rgb(95, 58, 198);
+}

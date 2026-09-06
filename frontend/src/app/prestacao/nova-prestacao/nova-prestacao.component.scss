@@ -1,0 +1,50 @@
+.nav-link {
+    color: #6C757D;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background-color: #7749F8;
+      transform: scaleX(0) translateX(-50%); // Center the line and initially scale it to 0
+      transition: transform 0.3s ease;
+      transform-origin: center bottom; // Adjust the transform origin to the center bottom
+    }
+
+    &:hover {
+      color: #7749F8;
+    }
+  
+    &:hover::after {
+        transform: scaleX(1) translateX(-50%); // Ensure the line scales while remaining centered
+    }
+}
+  
+.nav-link.active {
+    color: #7749F8;
+    font-weight: 500;
+}
+
+.nav-link.active::after {
+    transform: scaleX(1) translateX(-50%); // Ensure the line remains centered when active
+
+}
+
+/* Initial state for all tab content containers */
+.tab-content-container {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+  /* When the tab content container is active */
+.tab-content-container.active {
+    opacity: 1;
+    transform: translateY(0);
+}

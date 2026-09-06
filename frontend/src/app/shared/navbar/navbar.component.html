@@ -1,0 +1,86 @@
+<!-- Mobile -->
+<div class="sticky-top d-flex flex-column d-md-none">
+  <div
+    class="pt-3 pb-3 bg-white d-flex d-md-none justify-content-between align-items-center"
+  >
+    <a (click)="openSidebar()">
+      <i class="bi bi-list" style="font-size: 2rem"></i>
+    </a>
+    <h2 class="mb-0 flex-fill text-center">{{ pageTitle }}</h2>
+    <div
+      *ngIf="showSearchButtons"
+      class="d-flex flex-row gap-3 align-items-center"
+    >
+      <a class="link-dark" href=""
+        ><i class="bi bi-funnel" style="font-size: 1.5rem"></i
+      ></a>
+      <a class="link-dark" href=""
+        ><i class="bi bi-three-dots-vertical" style="font-size: 1.5rem"></i
+      ></a>
+    </div>
+  </div>
+  <div class="pt-4 mb-n2 app-gradient"></div>
+</div>
+
+<!-- Tablet -->
+<div class="sticky-top d-none d-md-flex d-lg-none flex-column">
+  <div
+    class="py-3 px-4 bg-white d-none d-md-flex d-lg-none justify-content-between align-items-center"
+  >
+    <a (click)="openSidebar()" style="cursor: pointer">
+      <i class="d-lg-none bi bi-list" style="font-size: 2rem"></i>
+    </a>
+    <h3
+      class="mb-0"
+      [ngClass]="{ 'flex-fill text-center': !showActionButton }"
+      [ngStyle]="{ 'margin-left': showActionButton ? '7.5rem' : '' }"
+    >
+      {{ pageTitle }}
+    </h3>
+    <div *ngIf="showActionButton">
+      <ng-container *ngIf="!loading; else disabledButtonTablet">
+        <button
+          class="btn btn-primary px-3 fw-semibold"
+          (click)="onActionButtonClicked()"
+        >
+          <span class="me-2">+</span>{{ actionButtonText }}
+        </button>
+      </ng-container>
+      <ng-template #disabledButtonTablet>
+        <button
+          class="btn btn-primary disabled placeholder"
+          style="width: 10rem"
+        ></button>
+      </ng-template>
+    </div>
+  </div>
+  <div class="pt-4 app-gradient"></div>
+</div>
+
+<!-- Desktop -->
+<div class="sticky-top d-none d-lg-flex flex-column">
+  <div
+    class="bg-white px-4 py-4 d-none d-lg-flex justify-content-between align-items-center"
+  >
+    <h3 class="mb-0 flex-fill" [ngClass]="{ 'text-center': !showActionButton }">
+      {{ pageTitle }}
+    </h3>
+    <div *ngIf="showActionButton">
+      <ng-container *ngIf="!loading; else disabledButtonDesktop">
+        <button
+          class="btn btn-primary px-3 fw-semibold"
+          (click)="onActionButtonClicked()"
+        >
+          <span class="me-2">+</span>{{ actionButtonText }}
+        </button>
+      </ng-container>
+      <ng-template #disabledButtonDesktop>
+        <button
+          class="btn btn-primary disabled placeholder"
+          style="width: 10rem"
+        ></button>
+      </ng-template>
+    </div>
+  </div>
+  <div class="app-gradient" style="padding-top: 2rem"></div>
+</div>

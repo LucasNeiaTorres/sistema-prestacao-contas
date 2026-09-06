@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h4 class="modal-title">Confirmar Remoção</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="onDismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  <p>
+    <strong>Deseja remover o item atual?</strong>
+  </p>
+  <p>
+    Toda a informação relacionada a este item será removida.
+    <span class="text-danger">Essa operação é irreversível.</span>
+  </p>
+</div>
+<div class="modal-footer">
+  <button
+      type="button"
+      class="btn btn-outline-secondary fw-semibold"
+      ngbAutofocus
+      (click)="onDismiss()"
+    >
+      Cancelar
+    </button>
+    <ng-container *ngIf="!loading; else cancelDeleting">
+      <button
+        type="button"
+        class="btn btn-danger fw-semibold"
+        (click)="onRemove()"
+      >
+        Remover
+      </button>
+    </ng-container>
+    <ng-template #cancelDeleting>
+      <button type="button" class="btn btn-danger fw-semibold" disabled>
+        <span
+          class="spinner-border spinner-border-sm mx-4"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <span class="visually-hidden">Deletando...</span>
+      </button>
+    </ng-template>
+</div>

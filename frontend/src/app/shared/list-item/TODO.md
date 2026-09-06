@@ -1,0 +1,1 @@
+O pipe de data do Angular date : "MMM" exibe o mês no formato "jan.", "fev.", "mar.", etc. Mas seria melhor exibir "Jan", "Fev", "Mar", etc. sem o ponto.\ O copilot sugeriu utilizar um pipe customizado para remover o ponto do final.\

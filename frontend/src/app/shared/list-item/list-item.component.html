@@ -1,0 +1,120 @@
+<!-- Mobile -->
+<div class="d-md-none" *ngIf="!loading">
+  <div
+    [ngClass]="[
+      toBeDeleted ? 'app-minimize-animation' : '',
+      config.bottomBorder ? 'border-bottom' : ''
+    ]"
+    (click)="onEdit()"
+  >
+    <div
+      class="d-flex flex-row justify-content-between align-items-center pe-2 app-py-2-5"
+    >
+      <div class="d-flex gap-3 align-items-center app-flex-overflow-ellipsis">
+        <div class="d-flex flex-column align-items-center">
+          <span class="text-secondary fw-medium lh-sm app-fs-7">{{
+            config.date | date : "MMM" | titlecase
+          }}</span>
+          <span class="text-secondary fw-medium lh-sm app-fs-7">{{
+            config.date | date : "dd"
+          }}</span>
+        </div>
+        <div
+          class="d-flex justify-content-center flex-column app-flex-overflow-ellipsis"
+        >
+          <span class="fw-medium lh-base app-fs-7 app-flex-overflow-ellipsis">{{
+            config.topLeftText
+          }}</span>
+          <small
+            class="opacity-50 lh-sm fw-medium app-fs-8 app-flex-overflow-ellipsis"
+            >{{ config.bottonLeftText }}</small
+          >
+        </div>
+      </div>
+      <span class="fw-medium ms-3 app-fs-7">{{ config.rightText }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Desktop/Tablet -->
+<div class="d-none d-md-flex flex-column" *ngIf="!loading">
+  <div
+    class="px-3 app-list-item-hover"
+    [ngClass]="[
+      toBeDeleted ? 'app-minimize-animation' : '',
+      config.bottomBorder ? 'border-bottom' : ''
+    ]"
+  >
+    <div
+      class="d-flex flex-row justify-content-between align-items-center px-2 py-3"
+    >
+      <div class="d-flex gap-3">
+        <div class="d-flex flex-column align-items-center">
+          <span class="text-secondary fw-medium lh-sm">{{
+            config.date | date : "MMM" | titlecase
+          }}</span>
+          <span class="text-secondary fw-medium lh-sm">{{
+            config.date | date : "dd"
+          }}</span>
+        </div>
+        <div class="d-flex justify-content-center flex-column">
+          <span class="fw-medium lh-sm">{{ config.topLeftText }}</span>
+          <small class="opacity-50 fw-medium lh-sm">{{
+            config.bottonLeftText
+          }}</small>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="fw-medium ms-3 me-4">{{ config.rightText }}</span>
+        <button
+          class="btn btn-outline-primary border-0 rounded-circle ms-3 mx-n1"
+          (click)="onEdit()"
+        >
+          <i class="bi bi-pencil" style="font-size: 1.25rem"></i>
+        </button>
+        <button
+          class="btn btn-outline-danger border-0 rounded-circle ms-n1"
+          style="margin-right: -0.75rem"
+          (click)="onDelete()"
+        >
+          <i class="bi bi-trash" style="font-size: 1.25rem"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="loading">
+  <div
+    class="px-3 placeholder-glow"
+    [ngClass]="[config.bottomBorder ? 'border-bottom' : '']"
+  >
+    <div
+      class="d-flex flex-row justify-content-between align-items-center ps-1 pe-1 py-3"
+    >
+      <div class="d-flex gap-3" style="width: 60%">
+        <div
+          class="d-flex flex-column align-items-center justify-content-center"
+        >
+          <span class="rounded placeholder" style="padding: 1.125rem"></span>
+        </div>
+        <div class="d-flex flex-fill justify-content-center flex-column gap-1">
+          <span class="placeholder col-5 rounded"></span>
+          <small class="placeholder col-2 rounded"></small>
+        </div>
+      </div>
+      <div
+        class="d-flex flex-fill align-items-center justify-content-end gap-2"
+      >
+        <span class="placeholder rounded me-3" style="width: 20%"></span>
+        <span
+          class="rounded rounded-circle placeholder"
+          style="padding: 0.875rem"
+        ></span>
+        <span
+          class="rounded rounded-circle placeholder"
+          style="padding: 0.875rem"
+        ></span>
+      </div>
+    </div>
+  </div>
+</ng-container>

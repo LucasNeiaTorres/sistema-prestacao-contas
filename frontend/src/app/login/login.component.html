@@ -1,0 +1,129 @@
+<div class="container-fluid vh-100 bg-light py-4">
+  <!-- <img src="../../assets/Curatela.svg" alt="" width="200" class="mt-4 ms-4 img-fluid"> -->
+  <img
+    src="../../assets/Curatela.svg"
+    alt=""
+    width="200"
+    class="img-fluid mx-auto d-block"
+  />
+  <div class="row">
+    <div
+      class="app-box mt-4 p-4 border col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-xl-4 offset-xl-4"
+    >
+      <h2 class="text-center fw-bold">Login</h2>
+      <form [formGroup]="form" (ngSubmit)="onLogin()">
+        <div class="col-12 col-xl-10 offset-xl-1">
+          <div class="input-group mt-5">
+            <span class="app-input-group-icon"
+              ><i class="bi bi-envelope"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                placeholder="name@example.com"
+                [ngClass]="{
+                  'is-invalid':
+                    (!form.get('email').valid && form.get('email').touched) ||
+                    error
+                }"
+              />
+              <label for="email">Email</label>
+            </div>
+          </div>
+
+          <span
+            class="help-block"
+            *ngIf="!form.get('email').valid && form.get('email')?.touched"
+          >
+            <span class="form-text" *ngIf="form.get('email').errors['required']"
+              >Insira o email!</span
+            >
+            <span class="form-text" *ngIf="form.get('email').errors['email']"
+              >Digite um email válido!</span
+            >
+          </span>
+          <div class="input-group mt-3">
+            <span class="app-input-group-icon"><i class="bi bi-lock"></i></span>
+            <div class="form-floating">
+              <input
+                [type]="passwordVisible ? 'text' : 'password'"
+                class="form-control"
+                formControlName="senha"
+                id="senha"
+                placeholder="senha"
+                [ngClass]="{
+                  'is-invalid':
+                    (!form.get('senha').valid && form.get('senha').touched) ||
+                    error
+                }"
+                aria-describedby="eyePassword"
+              />
+              <label for="floatingPassword">Senha</label>
+            </div>
+            <button
+              id="eyePassword"
+              class="btn border-0 position-absolute end-0 translate-middle-y me-2"
+              style="top: calc(50% - 15px); z-index: 1200"
+              type="button"
+              (click)="passwordVisible = !passwordVisible"
+              [ngClass]="{
+                'me-4':
+                  (!form.get('senha').valid && form.get('senha').touched) ||
+                  error
+              }"
+            >
+              <i
+                class="bi bi-eye{{ passwordVisible ? '-slash' : '' }}"
+                style="font-size: 1.1rem"
+              ></i>
+            </button>
+          </div>
+          <span
+            class="form-text"
+            *ngIf="!form.get('senha').valid && form.get('senha').touched"
+            >Insira a senha!</span
+          >
+          <div *ngIf="error" class="mt-2">
+            <span class="form-text text-danger"> {{ error }}</span>
+            <br />
+          </div>
+          <div class="d-flex align-items-end flex-column bd-highlight">
+            <div class="p-2 bd-highlight text-decoration">
+              <a style="text-decoration: none; font-size: 12px" href=""
+                >Esqueceu sua senha?</a
+              >
+            </div>
+          </div>
+          <button
+            class="btn btn-primary col-12"
+            type="submit"
+            [disabled]="!form.valid || isLoading"
+          >
+            <div *ngIf="!isLoading">Entrar</div>
+            <span
+              *ngIf="isLoading"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <div class="row mt-4 col-12 mx-auto">
+            <hr class="col-5 my-auto" />
+            <p class="col-2 text-center text-divider">OU</p>
+            <hr class="col-5 my-auto" />
+          </div>
+          <button
+            class="btn btn-outline-primary mt-4 col-12"
+            type="submit"
+            (click)="onCadastrar()"
+          >
+            Cadastre-se
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

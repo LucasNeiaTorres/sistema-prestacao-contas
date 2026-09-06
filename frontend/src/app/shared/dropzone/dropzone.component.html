@@ -1,0 +1,97 @@
+<!--
+<div class="dropzone" #dropzone>
+  ...
+  <div class="dz-message">
+    ...
+    <div class="dropzone-previews" #previewsContainer></div>
+    ...
+  </div>
+</div>
+
+<div class="d-none" #previewTemplate>
+  ...
+</div>
+-->
+
+<div
+  class="border-secondary-subtle rounded rounded-3"
+  style="border: 2px dashed"
+>
+  <div class="dropzone" #dropzone>
+    <div class="dz-message">
+      <div class="p-4 d-flex flex-column">
+        <div class="d-none d-md-flex column-gap-4">
+          <label class="text-nowrap p-1">Enviar Arquivos:</label>
+          <div class="d-flex flex-column flex-fill">
+            <button
+              class="btn btn-sm fw-medium px-2 btn-primary align-self-start text-nowrap"
+            >
+              Adicionar arquivos
+            </button>
+          </div>
+        </div>
+        <div class="d-flex d-md-none justify-content-center">
+          <button class="btn fw-medium px-2 btn-primary text-nowrap w-100">
+            Adicionar arquivos
+          </button>
+        </div>
+        <div class="py-2">
+          <div class="dropzone-previews" #previewsContainer></div>
+        </div>
+        <div class="d-none d-md-flex flex-column">
+          <span class="form-text text-muted app-fs-7 lh-1"
+            >* Imagens devem ter tamanho menor que 20MB.
+          </span>
+          <span class="form-text text-muted app-fs-7"
+            >** PDFs devem ter tamanho menor que 5MB.
+          </span>
+        </div>
+        <div class="d-flex flex-column d-md-none">
+          <span class="form-text text-muted app-fs-8 lh-1"
+            >* Imagens devem ter tamanho menor que 20MB.
+          </span>
+          <span class="form-text text-muted app-fs-8"
+            >** PDFs devem ter tamanho menor que 5MB.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-none" #previewTemplate>
+  <div class="shadow shadow-sm">
+    <div
+      class="d-flex w-100 justify-content-between align-items-center mt-2 px-3 py-2 border rounded rounded-3 app-list-item-hover gap-3"
+    >
+      <div class="d-flex flex-column gap-1 pt-1 app-flex-overflow-ellipsis">
+        <div class="d-flex gap-2 app-flex-overflow-ellipsis align-items-center">
+          <span class="app-fs-7 app-flex-overflow-ellipsis" data-dz-name></span>
+          <span class="app-fs-7 fw-medium">(<span data-dz-size></span>)</span>
+        </div>
+        <span class="app-fs-7 text-danger pe-none" data-dz-errormessage></span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <div style="padding-top: 0.375rem; padding-bottom: 0.375rem">
+          <div
+            class="d-none spinner-border spinner-border-sm text-primary"
+            role="status"
+            #spinner
+            data-dz-processing
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <span class="d-none" data-dz-success>
+          <i class="bi bi-check fs-4 text-success"></i>
+        </span>
+        <span class="d-none me-1" data-dz-error>
+          <i class="bi bi-exclamation-circle fs-6 text-danger"></i>
+        </span>
+        <span data-dz-remove
+          ><i class="bi bi-x fs-4 app-x-hover" role="button"></i
+        ></span>
+      </div>
+    </div>
+  </div>
+</div>

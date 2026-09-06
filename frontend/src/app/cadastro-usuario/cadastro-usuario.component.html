@@ -1,0 +1,270 @@
+<div class="container-fluid vh-100 bg-light py-4">
+  <!-- <img src="../../assets/Curatela.svg" alt="" width="200" class="mt-4 ms-4 img-fluid"> -->
+  <img
+    src="../../assets/Curatela.svg"
+    alt=""
+    width="200"
+    class="img-fluid mx-auto d-block"
+  />
+  <div class="row">
+    <div
+      class="app-box mt-4 p-4 border col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-xl-4 offset-xl-4"
+    >
+      <h2 class="text-center fw-bold">Cadastro</h2>
+      <form [formGroup]="form" (ngSubmit)="onCadastrar()">
+        <div class="col-12 col-xl-10 offset-xl-1">
+          <div class="input-group mt-4">
+            <span class="app-input-group-icon"
+              ><i class="bi bi-person"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="nome"
+                class="form-control"
+                id="nome"
+                formControlName="nome"
+                placeholder="Nome Completo"
+                [ngClass]="{
+                  'is-invalid':
+                    !form.get('nome').valid && form.get('nome').touched
+                }"
+              />
+              <label for="nome">Nome Completo</label>
+            </div>
+          </div>
+          <span
+            class="help-block"
+            *ngIf="!form.get('nome').valid && form.get('nome').touched"
+          >
+            <span class="form-text" *ngIf="form.get('nome').errors['required']"
+              >Insira o nome!</span
+            >
+          </span>
+
+          <div class="input-group mt-3">
+            <span class="app-input-group-icon"
+              ><i class="bi bi-file-earmark-text"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="cpf_cnpj"
+                formControlName="cpf_cnpj"
+                maxlength="18"
+                placeholder="CPF/CNPJ"
+                appCpfCnpjMask
+                [ngClass]="{
+                  'is-invalid':
+                    !form.get('cpf_cnpj').valid &&
+                    form.get('cpf_cnpj').touched
+                }"
+              />
+              <label for="cpf_cnpj">CPF/CNPJ</label>
+            </div>
+          </div>
+          <span
+            class="help-block"
+            *ngIf="
+              !form.get('cpf_cnpj').valid && form.get('cpf_cnpj').touched
+            "
+          >
+            <span
+              class="form-text"
+              *ngIf="form.get('cpf_cnpj').errors['required']"
+              >Insira o CPF/CNPJ!</span
+            >
+            <span
+              class="form-text"
+              *ngIf="form.get('cpf_cnpj').errors['cpfInvalido']"
+              >Digite um CPF válido!</span
+            >
+            <span
+              class="form-text"
+              *ngIf="form.get('cpf_cnpj').errors['cnpjInvalido']"
+              >Digite um CNPJ válido!</span
+            >
+          </span>
+
+          <div class="input-group mt-3">
+            <span class="app-input-group-icon"
+              ><i class="bi bi-envelope"></i
+            ></span>
+            <div class="form-floating">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                placeholder="name@example.com"
+                [ngClass]="{
+                  'is-invalid':
+                    !form.get('email').valid && form.get('email').touched
+                }"
+              />
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <span
+            class="help-block"
+            *ngIf="!form.get('email').valid && form.get('email').touched"
+          >
+            <span class="form-text" *ngIf="form.get('email').errors['required']"
+              >Insira o email!</span
+            >
+            <span class="form-text" *ngIf="form.get('email').errors['email']"
+              >Digite um email válido!</span
+            >
+          </span>
+          <div class="input-group mt-3">
+            <span class="app-input-group-icon"><i class="bi bi-lock"></i></span>
+            <div class="form-floating">
+              <input
+                [type]="passwordVisible1 ? 'text' : 'password'"
+                type="password"
+                class="form-control"
+                formControlName="senha"
+                id="senha"
+                placeholder="senha"
+                [ngClass]="{
+                  'is-invalid':
+                    !form.get('senha').valid && form.get('senha').touched
+                }"
+                aria-describedby="eyePassword1"
+              />
+              <label for="senha">Senha</label>
+            </div>
+            <button
+              id="eyePassword1"
+              class="btn border-0 position-absolute top-50 end-0 translate-middle-y me-2"
+              style="z-index: 1200"
+              type="button"
+              (click)="passwordVisible1 = !passwordVisible1"
+              [ngClass]="{
+                'me-4': !form.get('senha').valid && form.get('senha').touched
+              }"
+            >
+              <i
+                class="bi bi-eye{{ passwordVisible1 ? '-slash' : '' }}"
+                style="font-size: 1.1rem"
+              ></i>
+            </button>
+          </div>
+          <span
+            class="help-block"
+            *ngIf="!form.get('senha').valid && form.get('senha').touched"
+          >
+            <span class="form-text" *ngIf="form.get('senha').errors['required']"
+              >Insira a senha!</span
+            >
+            <span
+              class="form-text"
+              *ngIf="form.get('senha').errors['minlength']"
+              >A senha deve possuir no mínimo 8 caracteres!</span
+            >
+          </span>
+
+          <div class="input-group mt-3">
+            <span class="app-input-group-icon"><i class="bi bi-lock"></i></span>
+            <div class="form-floating">
+              <input
+                [type]="passwordVisible2 ? 'text' : 'password'"
+                class="form-control"
+                id="confirmaSenha"
+                formControlName="confirmaSenha"
+                placeholder="confirmaSenha"
+                [ngClass]="{
+                  'is-invalid':
+                    !form.get('confirmaSenha').valid &&
+                    form.get('confirmaSenha').touched
+                }"
+                aria-describedby="eyePassword2"
+              />
+
+              <label for="confirmaSenha">Confirmar Senha</label>
+            </div>
+            <button
+              id="eyePassword2"
+              class="btn border-0 position-absolute top-50 end-0 translate-middle-y me-2"
+              style="z-index: 1200"
+              type="button"
+              (click)="passwordVisible2 = !passwordVisible2"
+              [ngClass]="{
+                'me-4':
+                  !form.get('confirmaSenha').valid &&
+                  form.get('confirmaSenha').touched
+              }"
+            >
+              <i
+                class="bi bi-eye{{ passwordVisible2 ? '-slash' : '' }}"
+                style="font-size: 1.1rem"
+              ></i>
+            </button>
+          </div>
+          <span
+            class="help-block mt-1"
+            *ngIf="
+              !form.get('confirmaSenha').valid &&
+              form.get('confirmaSenha').touched
+            "
+          >
+            <span
+              class="form-text"
+              *ngIf="
+                form.get('confirmaSenha').errors['senhasDiferentes'] &&
+                !form.get('confirmaSenha').errors['minlength'] &&
+                !form.get('confirmaSenha').errors['required']
+              "
+            >
+              Senhas diferentes!</span
+            >
+            <span
+              class="form-text"
+              *ngIf="form.get('confirmaSenha').errors['required']"
+              >Insira a senha!</span
+            >
+            <span
+              class="form-text"
+              *ngIf="form.get('confirmaSenha').errors['minlength']"
+              >A senha deve possuir no mínimo 8 caracteres!</span
+            >
+          </span>
+          <span
+            class="form-text"
+            *ngIf="
+              form.get('senha').invalid &&
+              form.get('senha').errors['senhaInvalida'] &&
+              !form.get('senha').errors['minlength'] &&
+              !form.get('senha').errors['required'] &&
+              !form.get('senha').errors['senhasDiferentes']
+            "
+          >
+            Sua senha deve conter pelo menos: <br />
+            <ul class="ps-3">
+              <li>8 caracteres</li>
+              <li>1 letra maiúscula</li>
+              <li>1 letra minúscula</li>
+              <li>1 número</li>
+            </ul>
+          </span>
+          <div *ngIf="error" class="mt-2">
+            <span class="form-text text-danger"> Insira dados válidos!</span>
+            <br />
+          </div>
+          <button
+            class="btn btn-primary mt-4 col-12"
+            [disabled]="!form.valid || isLoading"
+            type="submit"
+          >
+            <div *ngIf="!isLoading">Cadastrar</div>
+            <span
+              *ngIf="isLoading"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

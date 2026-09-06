@@ -1,0 +1,227 @@
+<div [formGroup]="form" storage="form-curatelado">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-person"></i></span>
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="nome"
+            formControlName="nome"
+            placeholder="Nome Completo"
+            [ngClass]="{
+              'is-invalid': !form.get('nome').valid && form.get('nome').touched
+            }"
+          />
+          <label for="nome">Nome Completo</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('nome').valid && form.get('nome').touched"
+      >
+        <span class="form-text" *ngIf="form.get('nome').errors['required']"
+          >Insira o nome!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-people"></i></span>
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="parentesco"
+            formControlName="parentesco"
+            placeholder="Parentesco"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('parentesco').valid && form.get('parentesco').touched
+            }"
+          />
+          <label for="parentesco">Parentesco</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('parentesco').valid && form.get('parentesco').touched"
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('parentesco').errors['required']"
+          >Insira o parentesco!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-file-earmark-text"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="cpf"
+            formControlName="cpf"
+            maxlength="14"
+            placeholder="CPF"
+            appCpfCnpjMask
+            [ngClass]="{
+              'is-invalid': !form.get('cpf').valid && form.get('cpf').touched
+            }"
+          />
+          <label for="cpf">CPF</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('cpf').valid && form.get('cpf').touched"
+      >
+        <span class="form-text" *ngIf="form.get('cpf').errors['required']"
+          >Insira o CPF!</span
+        >
+        <span class="form-text" *ngIf="form.get('cpf').errors['cpfInvalido']"
+          >Digite um CPF válido!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-person-vcard"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="rg"
+            formControlName="rg"
+            maxlength="12"
+            placeholder="RG"
+            [ngClass]="{
+              'is-invalid': !form.get('rg').valid && form.get('rg').touched
+            }"
+          />
+          <label for="rg">RG</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('rg').valid && form.get('rg').touched"
+      >
+        <span class="form-text" *ngIf="form.get('rg').errors['required']"
+          >Insira o RG!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-heart"></i></span>
+        <div class="form-floating">
+          <select
+            class="form-select form-control"
+            id="estado_civil"
+            formControlName="estado_civil"
+            placeholder="estado_civil"
+            [ngStyle]="{
+              'border-color':
+                !form.get('estado_civil').valid &&
+                form.get('estado_civil').touched
+                  ? 'red'
+                  : ''
+            }"
+          >
+            <option [ngValue]="null" selected>Selecione</option>
+            <option value="Solteiro(a)">Solteiro(a)</option>
+            <option value="Casado(a)">Casado(a)</option>
+            <option value="Divorciado(a)">Divorciado(a)</option>
+            <option value="Viúvo(a)">Viúvo(a)</option>
+          </select>
+          <label for="estado_civil">Estado Civil</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('estado_civil').valid && form.get('estado_civil').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('estado_civil').errors['required']"
+          >Selecione o estado civil!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-calendar-event"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="date"
+            class="form-control app-input-date"
+            id="data_nascimento"
+            formControlName="data_nascimento"
+            placeholder="data_nascimento"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('data_nascimento').valid &&
+                form.get('data_nascimento').touched
+            }"
+          />
+          <label for="data_nascimento">Data de Nascimento</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('data_nascimento').valid &&
+          form.get('data_nascimento').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_nascimento').errors['required']"
+          >Insira a data de nascimento!</span
+        >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_nascimento').errors['dataInvalida']"
+          >Digite uma data válida!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-calendar-event"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="date"
+            class="form-control app-input-date"
+            id="data_obito"
+            formControlName="data_obito"
+            placeholder="data_obito"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('data_obito').valid && form.get('data_obito').touched
+            }"
+          />
+          <label for="data_obito">Data de Óbito (se houver)</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('data_obito').valid && form.get('data_obito').touched"
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_obito').errors['dataInvalida']"
+          >Digite uma data válida!</span
+        >
+      </span>
+    </div>
+  </div>
+</div>

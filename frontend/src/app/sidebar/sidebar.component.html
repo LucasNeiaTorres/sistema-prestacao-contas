@@ -1,0 +1,447 @@
+<ng-container *ngIf="isEnabled">
+  <ng-template #sidebarMobile let-offcanvas>
+    <div class="p-3 d-flex flex-column h-100 app-shadow overflow-auto">
+      <div>
+        <!-- <a href="https://www.flaticon.com/free-icons/charity" title="charity icons">Charity icons created by Freepik - Flaticon</a> -->
+        <img
+          src="../../assets/Curatela.svg"
+          alt="Logo do Curatela"
+          height="48"
+          width="auto"
+          ngbAutoFocus
+        />
+      </div>
+      <hr />
+      <ul class="nav nav-pills mb-auto fw-medium overflow-auto">
+        <li class="nav-item w-100">
+          <button
+            type="button"
+            routerLinkActive="active app-force-text-white"
+            routerLink="./inicio"
+            class="nav-link text-dark d-flex flex-fill"
+            aria-current="page"
+            (click)="closeSidebar()"
+          >
+            <i class="bi bi-house-door me-2"></i>
+            Início
+          </button>
+        </li>
+
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link link-dark app-collapse-button d-flex align-items-center"
+            (click)="minhaContaCollapse.toggle()"
+            [attr.aria-expanded]="!isMinhaContaCollapsed"
+            aria-controls="collapseExample"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="var(--bs-dark-rgb)"
+              class="bi bi-chevron-down app-collapse-chevron me-2"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+              /></svg
+            >Minha Conta
+          </button>
+        </li>
+        <div
+          #minhaContaCollapse="ngbCollapse"
+          [(ngbCollapse)]="isMinhaContaCollapsed"
+        >
+          <ul class="btn-toggle-nav list-unstyled ps-4">
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./curador"
+                class="nav-link text-dark d-flex w-100"
+                aria-current="page"
+                (click)="closeSidebar()"
+              >
+                <i class="bi bi-person-lines-fill me-2"></i>
+                Curador
+              </button>
+            </li>
+            <li class="nav-item">
+              <!-- <a href="#" class="nav-link link-dark" aria-current="page">
+                <i class="bi bi-person-plus-fill me-2"></i>
+                Curatelado
+              </a> -->
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./curatelado"
+                class="nav-link text-dark d-flex w-100"
+                aria-current="page"
+                (click)="closeSidebar()"
+              >
+                <i class="bi bi-person-plus-fill me-2"></i>
+                Curatelado
+              </button>
+            </li>
+          </ul>
+        </div>
+        <li class="nav-item w-100">
+          <button
+            type="button"
+            routerLinkActive="active app-force-text-white"
+            routerLink="./selecionar-prestacao"
+            class="nav-link text-dark d-flex flex-fill"
+            aria-current="page"
+            (click)="closeSidebar()"
+          >
+            <i class="bi bi-box-arrow-in-right me-2"></i>
+            Selecionar Prestação
+          </button>
+        </li>
+        <div *ngIf="temPrestacaoSelecionada()">
+          <li class="nav-item">
+            <button
+              type="button"
+              class="nav-link link-dark app-collapse-button d-flex align-items-center text-nowrap overflow-hidden"
+              (click)="prestacaoCollapse.toggle()"
+              [attr.aria-expanded]="!isPrestacaoCollapsed"
+            >
+              <!-- <i class="bi bi-chevron-down app-collapse-chevron me-2"></i> -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="var(--bs-dark-rgb)"
+                class="bi bi-chevron-down app-collapse-chevron me-2"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                /></svg
+              >{{ prestacaoSelecionada() }}
+            </button>
+          </li>
+          <div
+            #prestacaoCollapse="ngbCollapse"
+            [(ngbCollapse)]="isPrestacaoCollapsed"
+          >
+            <ul class="btn-toggle-nav list-unstyled ps-4">
+              <li class="nav-item">
+                <button
+                  type="button"
+                  routerLinkActive="active app-force-text-white"
+                  routerLink="./receitas"
+                  class="nav-link text-dark d-flex flex-fill"
+                  aria-current="page"
+                  (click)="closeSidebar()"
+                >
+                  <i class="bi bi-piggy-bank me-2"></i>
+                  Receitas
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  type="button"
+                  routerLinkActive="active app-force-text-white"
+                  routerLink="./despesas"
+                  class="nav-link text-dark d-flex flex-fill"
+                  aria-current="page"
+                  (click)="closeSidebar()"
+                >
+                  <i class="bi bi-cash-coin me-2"></i>
+                  Despesas
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  type="button"
+                  routerLinkActive="active app-force-text-white"
+                  routerLink="./contas-bancarias"
+                  class="nav-link text-dark d-flex flex-fill"
+                  aria-current="page"
+                  (click)="closeSidebar()"
+                >
+                  <i class="bi bi-bank me-2"></i>
+                  Contas Bancárias
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  type="button"
+                  routerLinkActive="active app-force-text-white"
+                  routerLink="./bens-e-direitos"
+                  class="nav-link text-dark d-flex flex-fill"
+                  aria-current="page"
+                  (click)="closeSidebar()"
+                >
+                  <i class="bi bi-wallet2 me-2"></i>
+                  Bens e Direitos
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  type="button"
+                  routerLinkActive="active app-force-text-white"
+                  routerLink="./pendencias"
+                  class="nav-link text-dark d-flex flex-fill"
+                  aria-current="page"
+                  (click)="closeSidebar()"
+                  (click)="closeSidebar()"
+                >
+                  <i class="bi bi-hourglass-split me-2"></i>
+                  Pendências
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  type="button"
+                  routerLinkActive="active app-force-text-white"
+                  routerLink="./gerar-relatorio"
+                  class="nav-link text-dark d-flex flex-fill"
+                  aria-current="page"
+                  (click)="closeSidebar()"
+                >
+                  <i class="bi bi-file-earmark-medical me-2"></i>
+                  Gerar Relatório
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ul>
+      <hr />
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a href="#" class="nav-link link-dark" aria-current="page">
+            <i class="bi bi-box-arrow-left me-2"></i>
+            Sair
+          </a>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+
+  <div
+    class="p-3 d-none d-lg-flex flex-column h-100 app-shadow overflow-auto"
+    style="width: 17.5rem"
+  >
+    <div>
+      <!-- <a href="https://www.flaticon.com/free-icons/charity" title="charity icons">Charity icons created by Freepik - Flaticon</a> -->
+      <img
+        src="../../assets/Curatela.svg"
+        alt="Logo do Curatela"
+        height="48"
+        width="auto"
+      />
+    </div>
+    <hr />
+    <ul class="nav nav-pills mb-auto fw-medium overflow-auto">
+      <li class="nav-item w-100">
+        <button
+          type="button"
+          routerLinkActive="active app-force-text-white"
+          routerLink="./inicio"
+          class="nav-link text-dark d-flex flex-fill"
+          aria-current="page"
+        >
+          <i class="bi bi-house-door me-2"></i>
+          Início
+        </button>
+      </li>
+
+      <li class="nav-item">
+        <button
+          type="button"
+          class="nav-link link-dark app-collapse-button d-flex align-items-center"
+          (click)="minhaContaCollapse.toggle()"
+          [attr.aria-expanded]="!isMinhaContaCollapsed"
+          aria-controls="collapseExample"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="var(--bs-dark-rgb)"
+            class="bi bi-chevron-down app-collapse-chevron me-2"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+            /></svg
+          >Minha Conta
+        </button>
+      </li>
+      <div
+        #minhaContaCollapse="ngbCollapse"
+        [(ngbCollapse)]="isMinhaContaCollapsed"
+      >
+        <ul class="btn-toggle-nav list-unstyled ps-4">
+          <li class="nav-item">
+            <button
+              type="button"
+              routerLinkActive="active app-force-text-white"
+              routerLink="./curador"
+              (click)="closeSidebar()"
+              class="nav-link text-dark d-flex w-100"
+              aria-current="page"
+            >
+              <i class="bi bi-person-lines-fill me-2"></i>
+              Curador
+            </button>
+          </li>
+          <li class="nav-item">
+            <!-- <a href="#" class="nav-link link-dark" aria-current="page">
+              <i class="bi bi-person-plus-fill me-2"></i>
+              Curatelado
+            </a> -->
+            <button
+              type="button"
+              routerLinkActive="active app-force-text-white"
+              routerLink="./curatelado"
+              class="nav-link text-dark d-flex w-100"
+              aria-current="page"
+              (click)="closeSidebar()"
+            >
+              <i class="bi bi-person-plus-fill me-2"></i>
+              Curatelado
+            </button>
+          </li>
+        </ul>
+      </div>
+      <li class="nav-item w-100">
+        <button
+          type="button"
+          routerLinkActive="active app-force-text-white"
+          routerLink="./selecionar-prestacao"
+          class="nav-link text-dark d-flex flex-fill"
+          aria-current="page"
+        >
+          <i class="bi bi-box-arrow-in-right me-2"></i>
+          Selecionar Prestação
+        </button>
+      </li>
+      <div *ngIf="temPrestacaoSelecionada()">
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link link-dark app-collapse-button d-flex align-items-center"
+            (click)="prestacaoCollapse.toggle()"
+            [attr.aria-expanded]="!isPrestacaoCollapsed"
+          >
+            <!-- <i class="bi bi-chevron-down app-collapse-chevron me-2"></i> -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="var(--bs-dark-rgb)"
+              class="bi bi-chevron-down app-collapse-chevron me-2"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+              /></svg
+            >{{ prestacaoSelecionada() }}
+          </button>
+        </li>
+        <div
+          #prestacaoCollapse="ngbCollapse"
+          [(ngbCollapse)]="isPrestacaoCollapsed"
+        >
+          <ul class="btn-toggle-nav list-unstyled ps-4">
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./receitas"
+                class="nav-link text-dark d-flex flex-fill"
+                aria-current="page"
+              >
+                <i class="bi bi-piggy-bank me-2"></i>
+                Receitas
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./despesas"
+                class="nav-link text-dark d-flex flex-fill"
+                aria-current="page"
+              >
+                <i class="bi bi-cash-coin me-2"></i>
+                Despesas
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./contas-bancarias"
+                class="nav-link text-dark d-flex flex-fill"
+                aria-current="page"
+              >
+                <i class="bi bi-bank me-2"></i>
+                Contas Bancárias
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./bens-e-direitos"
+                class="nav-link text-dark d-flex flex-fill"
+                aria-current="page"
+              >
+                <i class="bi bi-wallet2 me-2"></i>
+                Bens e Direitos
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./pendencias"
+                class="nav-link text-dark d-flex flex-fill"
+                aria-current="page"
+              >
+                <i class="bi bi-hourglass-split me-2"></i>
+                Pendências
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                routerLinkActive="active app-force-text-white"
+                routerLink="./gerar-relatorio"
+                class="nav-link text-dark d-flex flex-fill"
+                aria-current="page"
+              >
+                <i class="bi bi-file-earmark-medical me-2"></i>
+                Gerar Relatório
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ul>
+    <hr />
+    <ul class="nav nav-pills flex-column">
+      <li class="nav-item">
+        <a
+          type="button"
+          class="nav-link link-dark"
+          aria-current="page"
+          (click)="onSair()"
+        >
+          <i class="bi bi-box-arrow-left me-2"></i>
+          Sair
+        </a>
+      </li>
+    </ul>
+  </div>
+</ng-container>

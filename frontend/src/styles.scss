@@ -1,0 +1,250 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$curatela-primary: mat.define-palette(mat.$indigo-palette);
+$curatela-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$curatela-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$curatela-theme: mat.define-light-theme((
+  color: (
+    primary: $curatela-primary,
+    accent: $curatela-accent,
+    warn: $curatela-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($curatela-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+/*
+ * Para mais informações sobre os ícones do Bootstrap, veja:
+ *   - https://icons.getbootstrap.com/#install
+ */
+@import "bootstrap-icons/font/bootstrap-icons";
+
+/*
+ * Para mais informações sobre as variáveis Sass do Bootstrap, veja:
+ *   - https://getbootstrap.com/docs/5.3/customize/sass/#maps-and-loops
+ *   - https://getbootstrap.com/docs/5.3/customize/overview/
+ *
+ * Cor primária selecionada com base no tema do Figma.
+ *   - https://www.figma.com/community/file/876022745968684318/bootstrap-5-ui-kit
+ *
+ * Para que o Bootstrap utilize valores customizados, é necessário sobrescrever
+ * as variáveis antes de importar o scss do Bootstrap (meio contra-intuitivo,
+ * mas é o que temos).
+ */
+$primary: #7749f8;
+
+$font-family-sans-serif: "Inter", system-ui, sans-serif;
+
+$enable-negative-margins: true;
+
+$offcanvas-horizontal-width: 480px;
+
+/*
+ * Para mais informações sobre imports Sass do Bootstrap, veja:
+ *   - https://getbootstrap.com/docs/5.3/customize/sass/#importing
+ *   - https://getbootstrap.com/docs/5.3/customize/overview/
+ */
+@import "bootstrap/scss/bootstrap";
+
+/*
+ * Animação do chevron do botão de collapse.
+ *
+ * IMPORTANTE: Para que o chevron seja corretamente animado, NÃO importar como icon font <i>.
+ * Importe como SVG!!!
+ *
+ * Problema:
+ * O bootstrap possui um componente que reúne vários componentes de collapse (Acordion).
+ *   - https://getbootstrap.com/docs/5.3/components/accordion
+ *
+ * Esse componente faz a animação do chevron automaticamente.
+ * O problema é que o design do botão (e do chevron) é muito diferente do que definimos no Figma.
+ *
+ * Solução:
+ * Utilizamos componente Collapse do bootstrap, que atende as nossas necessidades.
+ * Como o Collapse não tem chevron, criamos e customizamos seu comportamento via CSS.
+ *   - https://getbootstrap.com/docs/5.3/components/collapse
+ *   - https://medium.com/@disjfa/animate-a-open-and-closing-element-using-bootstraps-collapse-79540f641a8e
+ *
+ * Ícone do chevron retirado do Bootstrap Icons:
+ *   - https://icons.getbootstrap.com/icons/chevron-down
+ *
+ * Classes criadas para animar o chevron:
+ *   - app-collapse-button: classe do botão de collapse. Utilizada para verificar se a área está
+ *     expandida ou não.
+ *   - app-collapse-chevron: classe do chevron do botão de collapse.
+ */
+.app-collapse-button .app-collapse-chevron {
+  transition: 0.3s transform ease-in-out;
+}
+
+.app-collapse-button[aria-expanded="false"] .app-collapse-chevron {
+  transform: rotate(-90deg);
+}
+
+.app-box {
+    @extend .rounded-4;
+    @extend .bg-white;
+    @extend .shadow;
+    @extend .border-0;
+}
+
+.app-shadow {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.app-input-group-icon {
+  @extend .input-group-text;
+
+  i {
+    @extend .mx-1;
+    font-size: 1.25rem;
+  }
+}
+
+.app-mw-17-5 {
+  max-width: 17.5rem;
+}
+
+@include media-breakpoint-down(lg) {
+  .app-force-w-md-100 {
+    width: 100% !important;
+  }
+}
+
+.app-text-primary-emphasis {
+  color: #5227cc;
+}
+
+.app-collapse-button-end .app-collapse-chevron {
+  transition: 0.3s transform ease-in-out;
+}
+
+.app-collapse-button-end[aria-expanded="false"] .app-collapse-chevron {
+  transform: rotate(180deg);
+}
+
+.app-list-item-hover {
+  transition: 0.1s ease-in-out;
+}
+
+// .hoverable:hover {
+//   @extend .rounded-3;
+//   @extend .app-shadow;
+//   transform: scale(1.0175, 1);
+//   // background-color: $list-group-hover-bg;
+//   @extend .bg-white;
+//   color: $list-group-action-hover-color;
+// }
+
+.app-list-item-hover:hover {
+  background-color: $list-group-hover-bg;
+  color: $list-group-action-hover-color;
+}
+
+.app-fs-7 {
+  font-size: 0.875rem;
+}
+
+.app-fs-8 {
+  font-size: 0.75rem;
+}
+
+.app-fs-9 {
+  font-size: 0.625rem;
+}
+
+.app-flex-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-py-2-5 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+// conserta a margem errada do input-date do bootstrap, que estava 3px a direita
+.app-input-date {
+  padding-left: 9px !important;
+}
+
+@import 'animate.css';
+
+/*
+A simple little SCSS mixin for creating scrim gradients
+Inspired by Andreas Larson - https://github.com/larsenwork
+https://css-tricks.com/easing-linear-gradients/
+*/
+
+@mixin scrimGradient($startColor: $color-black, $direction: 'to bottom') {
+
+  $scrimCoordinates: (
+    0: 1,
+    19: 0.738,
+    34: 0.541,
+    47: 0.382,
+    56.5: 0.278,
+    65: 0.194,
+    73: 0.126,
+    80.2: 0.075,
+    86.1: 0.042,
+    91: 0.021,
+    95.2: 0.008,
+    98.2: 0.002,
+    100: 0
+  );
+
+  $hue: hue($startColor);
+  $saturation: saturation($startColor);
+  $lightness: lightness($startColor);
+  $stops: ();
+
+  @each $colorStop, $alphaValue in $scrimCoordinates {
+    $stop: hsla($hue, $saturation, $lightness, $alphaValue) percentage(calc($colorStop/100));
+    $stops: append($stops, $stop, comma);
+  }
+
+  background: linear-gradient(unquote($direction), $stops);
+
+}
+
+.app-gradient {
+  @include scrimGradient(#ffffff);
+}
+
+.top-25 {
+  top: 25%;
+}
+
+@import 'app/shared/animacoes/animacoes.scss';
+
+.app-x-hover {
+  transition: 0.2s ease-out;
+}
+
+.app-x-hover:hover {
+  @extend .text-danger;
+}

@@ -1,0 +1,190 @@
+$primary: #7749f8;
+$secondary-light: #ABB5BE;
+$secondary-dark: #6C757D;
+$secondary-hover: #54595E;
+$success: #28A745;
+
+.mat-stepper-horizontal {
+    margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+    margin-top: 16px;
+}
+
+hr {
+    color: #DEE2E6;
+    opacity: 1;
+
+}
+
+// desabilita o click em todos os steps
+::ng-deep .mat-horizontal-stepper-header-container {
+    pointer-events: none;
+}
+
+// adiciona animação de transição entre os steps menos para os botoes
+::ng-deep .mat-horizontal-stepper-content{
+    transition: opacity 0.3s ease-in-out;
+}
+
+::ng-deep .mat-horizontal-stepper-content.mat-horizontal-stepper-content-inactive {
+    opacity: 0;
+}
+
+::ng-deep .mat-horizontal-stepper-content:not(.mat-horizontal-stepper-content-inactive) {
+    opacity: 1;
+}
+
+::ng-deep .mat-horizontal-content-container {
+    padding-bottom: 16px !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+}
+
+// centraliza o stepper
+::ng-deep .mat-horizontal-stepper-header-container {
+    justify-content: center;
+}
+
+@media (min-width: 1230px) {
+    // coloca distancia entre os steps e os dividers
+    ::ng-deep .mat-step-header {
+        margin-right: 8px;
+        margin-left: 8px;
+    }
+
+    // aumenta tamanho dos dividers
+    ::ng-deep .mat-stepper-horizontal-line {
+        max-width: 40px !important;
+    }
+}
+
+// altera todas as bolinhas
+::ng-deep .mat-step-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+    background-color: $secondary-light !important;
+}
+
+// altera a bolinha do step selecionado
+::ng-deep .mat-step-icon-selected {
+    background-color: $primary !important;
+}
+
+// altera texto de todos os steps
+::ng-deep .mat-step-text-label {
+    color: $secondary-dark !important;
+    // overflow: visible !important;
+}
+
+// altera texto do step selecionado
+::ng-deep .mat-step-label-selected > .mat-step-text-label {
+    color: $primary !important;
+    font-weight: bold;
+}
+
+// altera linha de todos os steps
+::ng-deep .mat-stepper-horizontal-line {
+    background-color: $secondary-light !important;
+    max-width: 32px;
+    height: 2px !important;
+}
+
+// altera cor da linha do step selecionado (mat-stepper-horizontal-line) se mat-step-header tem mat-step-icon-selected
+::ng-deep .mat-step-header:has(.mat-step-icon-selected) + .mat-stepper-horizontal-line{
+    background-color: $primary !important;
+}
+
+// altera cor da linha do step concluido (mat-stepper-horizontal-line) se mat-step-header tem  mat-step-icon-state-done
+::ng-deep .mat-step-header:has(.mat-step-icon-state-done) + .mat-stepper-horizontal-line{
+    background-color: $success !important;
+}
+
+// tira foco do step selecionado
+::ng-deep .cdk-program-focused {
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+
+// tira background do hover do step e escurece texto e bolinha
+::ng-deep .mat-step-header:hover {
+    background-color: rgba(255, 255, 255, 0) !important;
+
+    // escurece texto
+    .mat-step-text-label {
+        color: $secondary-hover !important;
+    }
+
+    // escurece bolinha
+    .mat-step-icon {
+        background-color: $secondary-hover !important;
+    }
+}
+
+// tira background do click do step clicado
+::ng-deep .mat-step-header .mat-step-header-selected {
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+
+// insere cor na bolinha do step concluído
+::ng-deep .mat-step-icon-state-done {
+    background-color: $success !important;
+}
+
+// altera texto dos steps concluídos quando não está com o mouse em cima
+::ng-deep .mat-step-header:has(.mat-step-icon-state-done):not(:hover) .mat-step-text-label{
+    color: $success !important;
+}
+
+// tira fundo click removendo ripple effect
+::ng-deep .mat-step-header-ripple{
+    display: none !important;
+}
+
+// faz linhas ficarem verdes quando o step está concluído
+::ng-deep .mat-step-header:has(.mat-step-icon-state-done) .mat-stepper-horizontal-line{
+    background-color: $success !important;
+}
+
+// tira fundo do click do step selecionado
+.mat-step-header.cdk-keyboard-focused,
+.mat-step-header.cdk-program-focused {
+    display: none !important;
+}
+
+// faz linhas ficarem da cor do step quando o step está ativo
+::ng-deep .mat-step-header:has(.mat-step-icon-selected) .mat-stepper-horizontal-line{
+    background-color: $primary !important;
+}
+
+.content {
+    padding-bottom: 1rem;
+}
+
+// para mobile
+
+// faz bolinha da etapa
+.app-bola {
+    background-color: $primary;
+    border-radius: 50%;
+}
+
+.app-bola-maior {
+    width: 2.625rem;
+    height: 2.625rem;
+}
+
+.app-bola-media {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: white;
+}
+
+.app-bolinha {
+    width: 2.125rem;
+    height: 2.125rem;
+}
+
+.app-btn-footer {
+    height: 48px !important;
+}

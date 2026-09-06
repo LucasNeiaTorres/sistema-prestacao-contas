@@ -1,0 +1,340 @@
+<form [formGroup]="form">
+  <div
+    class="container-fluid vh-100 bg-light py-4 d-none d-lg-block overflow-scroll"
+  >
+    <div class="text-center">
+      <h3>Bem vindo ao Curatela!</h3>
+    </div>
+    <div class="row">
+      <div
+        class="app-box mt-3 py-3 border col-12 col-lg-10 offset-lg-1 col-xxl-8 offset-xxl-2"
+      >
+        <!-- stepper no desktop -->
+        <mat-stepper
+          linear
+          #stepper
+          class="align-items-center"
+          [selectedIndex]="step - 1"
+        >
+          <mat-step
+            label="Curador"
+            [stepControl]="form.get('curador')"
+            [editable]="false"
+            [completed]="step > 1"
+          >
+            <hr />
+            <div class="content">
+              <h5 class="text-center my-2">Cadastro do Curador</h5>
+              <app-cadastro-curador *ngIf="isDesktop()"></app-cadastro-curador>
+            </div>
+            <div class="bg-white pt-1 d-flex flex-row justify-content-end">
+              <button
+                type="submit"
+                [disabled]="form.get('curador').invalid || isLoading"
+                class="btn btn-primary app-btn-footer fw-semibold px-5"
+                (click)="submitCurador()"
+                style="min-width: 160px"
+              >
+                <div *ngIf="!isLoading">Avançar</div>
+                <span
+                  *ngIf="isLoading"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </mat-step>
+          <mat-step
+            label="Curatelado"
+            [stepControl]="form.get('curatelado')"
+            [editable]="false"
+            [completed]="step > 2"
+          >
+            <hr />
+            <div class="content">
+              <h5 class="text-center my-2">Cadastro do Curatelado</h5>
+              <app-cadastro-curatelado
+                *ngIf="isDesktop()"
+              ></app-cadastro-curatelado>
+            </div>
+            <div class="bg-white pt-1 d-flex flex-row justify-content-end">
+              <button
+                type="submit"
+                [disabled]="form.get('curatelado').invalid || isLoading"
+                class="btn btn-primary app-btn-footer fw-semibold px-5"
+                (click)="submitCuratelado()"
+                style="min-width: 160px"
+              >
+                <div *ngIf="!isLoading">Avançar</div>
+                <span
+                  *ngIf="isLoading"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </mat-step>
+          <mat-step
+            label="Prestação"
+            [stepControl]="form.get('prestacao')"
+            [completed]="step > 3"
+          >
+            <hr />
+            <div class="content">
+              <h5 class="text-center my-2">Cadastro da Prestação de Contas</h5>
+              <app-cadastro-prestacao
+                *ngIf="isDesktop()"
+              ></app-cadastro-prestacao>
+            </div>
+            <div class="bg-white pt-1 d-flex flex-row justify-content-end">
+              <button
+                type="submit"
+                [disabled]="form.get('prestacao').invalid"
+                class="btn btn-primary app-btn-footer fw-semibold px-5"
+                matStepperNext
+                (click)="addStep()"
+              >
+                Avançar
+              </button>
+            </div>
+          </mat-step>
+          <mat-step
+            label="Endereço"
+            [stepControl]="form.get('endereco')"
+            [completed]="step > 4"
+          >
+            <hr />
+            <div class="content">
+              <h5 class="text-center my-2">
+                Cadastro do Endereço do Curatelado
+              </h5>
+              <app-cadastro-endereco
+                *ngIf="isDesktop()"
+              ></app-cadastro-endereco>
+            </div>
+            <div
+              class="bg-white pt-1 d-flex flex-row justify-content-end align-items-center"
+            >
+              <button
+                class="btn btn-outline-primary app-btn-footer me-auto fw-semibold px-5"
+                (click)="removeStep()"
+                matStepperPrevious
+              >
+                Voltar
+              </button>
+              <button
+                *ngIf="!resideCasaRepouso()"
+                type="submit"
+                [disabled]="!form.get('endereco').valid"
+                class="btn btn-primary app-btn-footer fw-semibold px-5"
+                matStepperNext
+                (click)="addStep()"
+              >
+                Avançar
+              </button>
+              <button
+                *ngIf="resideCasaRepouso()"
+                type="submit"
+                [disabled]="!form.get('endereco').valid || isLoading"
+                class="btn btn-primary app-btn-footer fw-semibold px-4"
+                (click)="submitPrestacao()"
+                style="min-width: 165px"
+              >
+                <div *ngIf="!isLoading">Prestar Contas</div>
+                <span
+                  *ngIf="isLoading"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </mat-step>
+          <mat-step
+            label="Residentes"
+            [stepControl]="form.get('residentes')"
+            *ngIf="!resideCasaRepouso()"
+            [editable]="false"
+            [completed]="step > 5"
+          >
+            <hr />
+            <div class="content">
+              <h5 class="text-center mt-2 mb-4">
+                Cadastro dos Residentes do Endereço
+              </h5>
+              <app-cadastro-residentes
+                *ngIf="isDesktop()"
+              ></app-cadastro-residentes>
+            </div>
+            <div
+              class="bg-white pt-1 d-flex flex-row justify-content-end align-items-center"
+            >
+              <button
+                class="btn btn-outline-primary app-btn-footer me-auto fw-semibold px-5"
+                (click)="removeStep()"
+                matStepperPrevious
+              >
+                Voltar
+              </button>
+              <button
+                type="submit"
+                [disabled]="residentesInvalidos() || isLoading"
+                class="btn btn-primary app-btn-footer fw-semibold px-4"
+                (click)="submitPrestacao()"
+                style="min-width: 165px"
+              >
+                <div *ngIf="!isLoading">Prestar Contas</div>
+                <span
+                  *ngIf="isLoading"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </div>
+    </div>
+  </div>
+  <!-- mobile -->
+  <div class="container-fluid px-0 d-lg-none bg-white min-vh-100">
+    <div class="sticky-top bg-white">
+      <div class="d-flex flex-row gap-3 py-3 px-4">
+        <div
+          class="app-bola app-bola-maior d-flex justify-content-center align-items-center"
+        >
+          <div
+            class="app-bola app-bola-media d-flex justify-content-center align-items-center"
+          >
+            <div
+              class="app-bola app-bolinha text-light fw-bold d-flex justify-content-center align-items-center"
+            >
+              {{ step }}
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column">
+          <p class="text-secondary mb-0" style="font-size: 12px">
+            PASSO {{ step }} / {{ qtdeSteps() }}
+          </p>
+          <p class="fw-semibold mb-0" style="font-size: 16px">
+            {{ steps[step - 1] }}
+          </p>
+        </div>
+      </div>
+      <ngb-progressbar
+        style="border-radius: 0"
+        type="primary"
+        [value]="valorProgressBar()"
+        height="4px"
+      />
+    </div>
+    <!-- 158px: 80px do footer + 78 do topo -->
+    <div
+      class="px-4 pb-3 overflow-scroll"
+      style="height: calc(100vh - 158px)"
+      [ngClass]="{ 'pt-3': step === 5 }"
+    >
+      <app-cadastro-prestacao *ngIf="step >= 4 && !isDesktop()" class="d-none"></app-cadastro-prestacao>
+      <app-cadastro-endereco *ngIf="step == 5 && !isDesktop()" class="d-none"></app-cadastro-endereco>
+      <router-outlet *ngIf="step <= 5 && !isDesktop()"></router-outlet>
+    </div>
+    <div
+      class="fixed-bottom bg-white py-3 px-4 d-flex flex-row justify-content-end shadow"
+    >
+      <button
+        type="button"
+        (click)="onAnterior()"
+        class="btn btn-outline-primary me-auto app-btn-footer fw-semibold px-4"
+        *ngIf="step > 3"
+      >
+        Voltar
+      </button>
+      <button
+        type="submit"
+        [disabled]="form.get('curador').invalid || isLoading"
+        (click)="submitCurador(true)"
+        class="btn btn-primary app-btn-footer fw-semibold px-4"
+        *ngIf="step === 1"
+        style="min-width: 110px"
+      >
+        <div *ngIf="!isLoading">Avançar</div>
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        type="submit"
+        [disabled]="form.get('curatelado').invalid || isLoading"
+        (click)="submitCuratelado(true)"
+        class="btn btn-primary app-btn-footer fw-semibold px-4"
+        *ngIf="step === 2"
+        style="min-width: 110px"
+      >
+        <div *ngIf="!isLoading">Avançar</div>
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        type="submit"
+        [disabled]="form.get('prestacao').invalid"
+        (click)="onProximo()"
+        class="btn btn-primary app-btn-footer fw-semibold px-4"
+        *ngIf="step === 3"
+      >
+        Avançar
+      </button>
+      <button
+        type="button"
+        [disabled]="!form.get('endereco').valid"
+        (click)="onProximo()"
+        class="btn btn-primary app-btn-footer fw-semibold px-4"
+        *ngIf="step === 4 && !resideCasaRepouso()"
+      >
+        Avançar
+      </button>
+      <button
+        type="button"
+        [disabled]="!form.get('endereco').valid || isLoading"
+        (click)="submitPrestacao()"
+        class="btn btn-primary app-btn-footer fw-semibold px-3"
+        *ngIf="step === 4 && resideCasaRepouso()"
+        style="min-width: 150px"
+      >
+        <div *ngIf="!isLoading">Prestar Contas</div>
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        type="button"
+        [disabled]="!form.get('residentes').valid || isLoading"
+        (click)="submitPrestacao()"
+        class="btn btn-primary app-btn-footer fw-semibold px-3"
+        *ngIf="step === 5"
+        style="min-width: 150px"
+      >
+        <div *ngIf="!isLoading">Prestar Contas</div>
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,2 @@
+- Separar melhor mobile do desktop
+- Remover enable e disable e ter um servico na aplicacao. No app.component teria um ngIf para mostrar ou nao a sidebar

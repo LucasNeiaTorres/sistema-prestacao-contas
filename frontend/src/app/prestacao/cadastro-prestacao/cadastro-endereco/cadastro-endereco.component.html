@@ -1,0 +1,212 @@
+<div [formGroup]="form" storage="form-endereco">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-map"></i></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="cep"
+            maxlength="9"
+            appCepMask
+            formControlName="cep"
+            placeholder="cep"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('cep').valid &&
+                form.get('cep').touched &&
+                !loadingCep()
+            }"
+          />
+          <label for="cep">CEP</label>
+        </div>
+        <button
+          *ngIf="loadingCep()"
+          id="spinner"
+          class="btn border-0 position-absolute end-0 translate-middle-y top-50"
+          style="z-index: 1250"
+          type="button"
+        >
+          <span
+            class="spinner-border spinner-border-sm text-primary opacity-75"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('cep').valid &&
+          form.get('cep').touched &&
+          form.get('cep').errors
+        "
+      >
+        <span class="form-text" *ngIf="form.get('cep').errors['required']"
+          >Insira o CEP!</span
+        >
+        <span class="form-text" *ngIf="form.get('cep').errors['cepInvalido']"
+          >Digite um CEP válido!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-geo-alt"></i></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="estado"
+            formControlName="estado"
+            placeholder="estado"
+          />
+          <label for="estado">Estado</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-geo-alt"></i></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="cidade"
+            formControlName="cidade"
+            placeholder="cidade"
+          />
+          <label for="cidade">Cidade</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-bullseye"></i></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="bairro"
+            formControlName="bairro"
+            placeholder="bairro"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('bairro').valid && form.get('bairro').touched
+            }"
+          />
+          <label for="bairro">Bairro</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('bairro').valid && form.get('bairro').touched"
+      >
+        <span class="form-text" *ngIf="form.get('bairro').errors['required']"
+          >Insira o bairro!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-geo"></i></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="logradouro"
+            formControlName="logradouro"
+            placeholder="logradouro"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('logradouro').valid && form.get('logradouro').touched
+            }"
+          />
+          <label for="logradouro">Logradouro</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('logradouro').valid && form.get('logradouro').touched"
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('logradouro').errors['required']"
+          >Insira o logradouro!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-house-door"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="numero"
+            formControlName="numero"
+            placeholder="numero"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('numero').valid && form.get('numero').touched
+            }"
+          />
+          <label for="numero">Número</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('numero').valid && form.get('numero').touched"
+      >
+        <span class="form-text" *ngIf="form.get('numero').errors['required']"
+          >Insira o número!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-info-circle"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="complemento"
+            formControlName="complemento"
+            placeholder="complemento"
+          />
+          <label class="mw-100" for="complemento">Complemento</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-floating mt-3">
+      <p>Reside em casa de repouso?</p>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="reside_casa_repouso"
+          id="repousoSim"
+          [value]="true"
+          formControlName="reside_casa_repouso"
+        />
+        <label class="duas-colunas" for="repousoSim">Sim</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="reside_casa_repouso"
+          id="repousoNao"
+          [value]="false"
+          formControlName="reside_casa_repouso"
+        />
+        <label class="form-check-label" for="repousoNao">Não</label>
+      </div>
+    </div>
+  </div>
+</div>

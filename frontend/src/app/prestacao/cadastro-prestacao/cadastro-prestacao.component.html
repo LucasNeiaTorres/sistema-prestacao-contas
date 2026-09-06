@@ -1,0 +1,316 @@
+<div [formGroup]="form" storage="form-prestacao">
+  <div class="row">
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-person"></i></span>
+        <div class="form-floating">
+          <select
+            class="form-select form-control"
+            id="curatelado_id"
+            formControlName="curatelado_id"
+            placeholder="curatelado_id"
+            [ngStyle]="{
+              'border-color':
+                !form.get('curatelado_id').valid &&
+                form.get('curatelado_id').touched
+                  ? 'red'
+                  : ''
+            }"
+          >
+            <option *ngIf="!this.form.get('curatelado_id')" [ngValue]="null" selected>
+              Selecione
+            </option>
+            <option
+              *ngFor="let curatelado of curatelados"
+              [value]="curatelado.curatelado_id"
+            >
+              {{ curatelado.nome }}
+            </option>
+          </select>
+          <label for="curatelado_id">Nome Completo do Curatelado</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('curatelado_id').valid &&
+          form.get('curatelado_id').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('curatelado_id').errors['required']"
+          >Selecione o curatelado!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-file-earmark-binary"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="numero_processo"
+            formControlName="numero_processo"
+            placeholder="numero_processo"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('numero_processo').valid &&
+                form.get('numero_processo').touched
+            }"
+          />
+          <label for="numero_processo">Número do Processo</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('numero_processo').valid &&
+          form.get('numero_processo').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('numero_processo').errors['required']"
+          >Insira o número do processo!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-calendar2-check"></i
+        ></span>
+        <div class="form-floating">
+          <select
+            class="form-select form-control"
+            id="situacao_prestacao_anterior"
+            formControlName="situacao_prestacao_anterior"
+            placeholder="situacao_prestacao_anterior"
+            [ngStyle]="{
+              'border-color':
+                !form.get('situacao_prestacao_anterior').valid &&
+                form.get('situacao_prestacao_anterior').touched
+                  ? 'red'
+                  : ''
+            }"
+          >
+            <option [ngValue]="null" selected>Selecione</option>
+            <option value="Aprovada">Aprovada</option>
+            <option value="Reprovada">Reprovada</option>
+            <option value="Período">Período</option>
+          </select>
+          <label for="situacao_prestacao_anterior"
+            >Situação da Prestação Anterior</label
+          >
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('situacao_prestacao_anterior').valid &&
+          form.get('situacao_prestacao_anterior').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('situacao_prestacao_anterior').errors['required']"
+          >Selecione a situação da prestação anterior!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"><i class="bi bi-list-ul"></i></span>
+        <div class="form-floating">
+          <select
+            class="form-select form-control"
+            id="tipo_interdicao"
+            formControlName="tipo_interdicao"
+            placeholder="tipo_interdicao"
+            [ngStyle]="{
+              'border-color':
+                !form.get('tipo_interdicao').valid &&
+                form.get('tipo_interdicao').touched
+                  ? 'red'
+                  : ''
+            }"
+          >
+            <option [ngValue]="null" selected>Selecione</option>
+            <option value="Curatela">Curatela</option>
+            <option value="Tutela">Tutela</option>
+          </select>
+          <label for="tipo_interdicao">Tipo de Interdição</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('tipo_interdicao').valid &&
+          form.get('tipo_interdicao').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('tipo_interdicao').errors['required']"
+          >Selecione o tipo de interdição!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-card-text"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="motivo_interdicao"
+            formControlName="motivo_interdicao"
+            placeholder="motivo_interdicao"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('motivo_interdicao').valid &&
+                form.get('motivo_interdicao').touched
+            }"
+          />
+          <label for="motivo_interdicao">Motivo da Interdição</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('motivo_interdicao').valid &&
+          form.get('motivo_interdicao').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('motivo_interdicao').errors['required']"
+          >Insira o motivo da interdição!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-calendar3-event"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="date"
+            class="form-control app-input-date"
+            id="data_termo"
+            formControlName="data_termo"
+            placeholder="data_termo"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('data_termo').valid && form.get('data_termo').touched
+            }"
+          />
+          <label for="data_termo">Data do Termo de Compromisso</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('data_termo').valid && form.get('data_termo').touched"
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_termo').errors['required']"
+          >Insira a data do termo de compromisso!</span
+        >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_termo').errors['dataInvalida']"
+          >Digite uma data válida!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-calendar3-range"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="date"
+            class="form-control app-input-date"
+            id="data_inicial"
+            formControlName="data_inicial"
+            placeholder="data_inicial"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('data_inicial').valid &&
+                form.get('data_inicial').touched
+            }"
+          />
+          <label for="data_inicial">Data Inicial da Prestação</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="
+          !form.get('data_inicial').valid && form.get('data_inicial').touched
+        "
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_inicial').errors['required']"
+          >Insira a data inicial da prestação!</span
+        >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_inicial').errors['dataInvalida']"
+          >Digite uma data válida!</span
+        >
+        <span
+          class="form-text"
+          *ngIf="
+            form.get('data_inicial').errors['dataFinalInvalida'] &&
+            !form.get('data_inicial').errors['dataInvalida']
+          "
+          >Data inicial não pode ser maior que a data final!</span
+        >
+      </span>
+    </div>
+    <div class="col-md-6 col-12">
+      <div class="input-group mt-3">
+        <span class="app-input-group-icon"
+          ><i class="bi bi-calendar3-range"></i
+        ></span>
+        <div class="form-floating">
+          <input
+            type="date"
+            class="form-control app-input-date"
+            id="data_final"
+            formControlName="data_final"
+            placeholder="data_final"
+            [ngClass]="{
+              'is-invalid':
+                !form.get('data_final').valid && form.get('data_final').touched
+            }"
+          />
+          <label for="data_final">Data Final da Prestação</label>
+        </div>
+      </div>
+      <span
+        class="help-block"
+        *ngIf="!form.get('data_final').valid && form.get('data_final').touched"
+      >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_final').errors['required']"
+          >Insira a data final da prestação!</span
+        >
+        <span
+          class="form-text"
+          *ngIf="form.get('data_final').errors['dataFinalInvalida']"
+          >Data inicial não pode ser maior que a data final!</span
+        >
+      </span>
+    </div>
+  </div>
+</div>

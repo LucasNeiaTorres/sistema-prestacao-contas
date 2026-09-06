@@ -1,0 +1,21 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+button {
+    margin-top: 1em;
+}
+
+.ng-invalid button {
+    margin-top: 1em;
+}
+
+.gray-200{
+    background-color: $gray-200;
+}
+
+.text-divider {
+    color: #8c8c8c;
+    font-size: 12px;
+    margin-top: 0;
+    margin-bottom: 0;
+}

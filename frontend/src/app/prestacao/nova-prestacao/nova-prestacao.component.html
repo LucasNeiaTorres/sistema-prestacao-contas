@@ -1,0 +1,104 @@
+<div class="h-100">
+  <div class="px-4">
+    <app-navbar
+      [pageTitle]="'Cadastro da Prestação'"
+      [showActionButton]="false"
+      [showSearchButtons]="false"
+    ></app-navbar>
+  </div>
+  <div class="d-flex flex-column align-items-center">
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="activeNav"
+      class="align-items-center bg-white sticky-top position-fixed d-flex justify-content-center"
+      style="margin-top: 72px; width: 100%; left: 0"
+      [ngStyle]="
+        isMobileWidth()
+          ? {
+              borderBottom: '1px solid #e0e0e0',
+              width: '100%',
+              left: '0',
+              marginTop: '72px'
+            }
+          : isLgWidth()
+          ? { width: 'calc(100% - 18rem)', left: '18rem', marginTop: '80px' }
+          : { marginTop: '72px' }
+      "
+    >
+      <li [ngbNavItem]="1">
+        <button ngbNavLink>Prestação</button>
+      </li>
+      <li [ngbNavItem]="2">
+        <button ngbNavLink>Endereço</button>
+      </li>
+    </ul>
+    <div
+      class="w-100 overflow-auto px-4"
+      style="height: calc(100vh - 114px); padding-bottom: 80px"
+      [ngStyle]="
+        !isMobileWidth()
+          ? { 'padding-bottom': '20px' }
+          : { 'padding-bottom': '80px' }
+      "
+    >
+      <div class="d-flex flex-column col-md-10 offset-md-1 col-12">
+        <div [ngbNavOutlet]="nav" [ngClass]="{ 'mt-3': isMobileWidth() }"></div>
+        <!-- colocado aqui para sempre carregar os componentes de form -->
+        <app-cadastro-prestacao
+          [ngClass]="{ 'd-none': activeNav !== 1 }"
+        ></app-cadastro-prestacao>
+        <app-cadastro-endereco
+          [ngClass]="{ 'd-none': activeNav !== 2 }"
+        ></app-cadastro-endereco>
+        <div
+          class="d-flex flex-column gap-1"
+          [ngClass]="{ 'd-none': activeNav !== 2 }"
+          *ngIf="!resideCasaRepouso()"
+        >
+          <div class="d-flex align-items-center gap-3 mt-3">
+            <hr class="flex-fill text-secondary" />
+            <span class="text-secondary">Residentes</span>
+            <hr class="flex-fill text-secondary" />
+          </div>
+          <!-- <h6>Lista de residentes</h6> -->
+          <app-cadastro-residentes></app-cadastro-residentes>
+        </div>
+        <!-- desktop button -->
+        <button
+          [disabled]="form.invalid || isLoading"
+          class="btn btn-primary fw-semibold col-xl-2 col-lg-3 col-12 mt-3 d-none d-md-block"
+          (click)="onCadastrar()"
+          style="min-width: 200px; height: 48px"
+        >
+          <div *ngIf="!isLoading && !editMode">Cadastrar Prestação</div>
+          <div *ngIf="!isLoading && editMode">Alterar Prestação</div>
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+      <!-- mobile button -->
+      <div class="fixed-bottom px-4 py-3 bg-white app-shadow d-md-none">
+        <button
+          [disabled]="form.invalid || isLoading"
+          class="btn btn-primary fw-semibold col-12 app-btn-footer"
+          (click)="onCadastrar()"
+          style="min-width: 200px; height: 48px"
+        >
+          <div *ngIf="!isLoading && !editMode">Cadastrar Prestação</div>
+          <div *ngIf="!isLoading && editMode">Alterar Prestação</div>
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

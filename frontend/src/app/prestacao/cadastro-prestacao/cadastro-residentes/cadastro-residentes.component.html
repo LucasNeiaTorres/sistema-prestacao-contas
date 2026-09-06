@@ -1,0 +1,187 @@
+<p *ngIf="this.residenteControls.length === 0">
+  Adicione os residentes do endereço do curatelado
+</p>
+<div class="d-flex flex-column pb-3">
+  <div *ngFor="let residente of residenteControls.controls; let i = index">
+    <div
+      class="d-flex w-100 flex-column app-shadow rounded rounded-3"
+      [ngClass]="{
+        'app-maximize-animation': addThis && this.residenteControls.length - 1 === i,
+        'app-minimize-animation': isRemoving[i],
+        'mb-3' : !isRemoving[i],
+      }"
+      [ngStyle]="{
+        border:
+          !residenteControls.at(i).valid && isTouched(residenteControls.at(i))
+            ? '1px solid red'
+            : '0'
+      }"
+      [id]="i"
+    >
+      <div class="d-flex justify-content-between align-items-stretch px-3">
+        <button
+          class="nav-link py-4 app-collapse-button-end flex-fill d-flex flex-column"
+          (click)="isCollapsed[i] = !isCollapsed[i]"
+          [attr.aria-expanded]="!isCollapsed[i]"
+          aria-controls="collapseExample"
+        >
+          <div
+            class="d-flex justify-content-start align-items-center pe-3 gap-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="var(--bs-dark-rgb)"
+              class="bi bi-chevron-up app-collapse-chevron"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"
+              />
+            </svg>
+            <h5 class="mb-0">Residente {{ i + 1 }}</h5>
+          </div>
+        </button>
+        <div
+          style="
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <button class="btn btn-danger" (click)="removeResidente(i)">
+            <i class="bi bi-trash" style="font-size: 1.25rem"></i>
+          </button>
+        </div>
+      </div>
+      <div class="px-3" [ngbCollapse]="isCollapsed[i]">
+        <div
+          [formGroup]="getFormGroup(residente)"
+          [storage]="getNameStorage(i)"
+        >
+          <div class="col-12">
+            <div class="input-group">
+              <span class="app-input-group-icon"
+                ><i class="bi bi-person"></i
+              ></span>
+              <div class="form-floating">
+                <input
+                  class="form-control"
+                  id="nome"
+                  [formControl]="getControl(residente, 'nome')"
+                  placeholder="Nome Completo"
+                  [ngClass]="{
+                    'is-invalid':
+                      !residenteControls.at(i).get('nome').valid &&
+                      residenteControls.at(i).get('nome').touched
+                  }"
+                />
+                <label for="nome">Nome</label>
+              </div>
+            </div>
+            <span
+              class="help-block"
+              *ngIf="
+                !residenteControls.at(i).get('nome').valid &&
+                residenteControls.at(i).get('nome').touched
+              "
+            >
+              <span
+                class="form-text"
+                *ngIf="residenteControls.at(i).get('nome').errors['required']"
+                >Insira o nome do residente!</span
+              >
+            </span>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="input-group">
+              <span class="app-input-group-icon"
+                ><i class="bi bi-people"></i
+              ></span>
+              <div class="form-floating">
+                <input
+                  class="form-control"
+                  id="parentesco"
+                  [formControl]="getControl(residente, 'parentesco')"
+                  placeholder="parentesco"
+                  [ngClass]="{
+                    'is-invalid':
+                      !residenteControls.at(i).get('parentesco').valid &&
+                      residenteControls.at(i).get('parentesco').touched
+                  }"
+                />
+                <label for="parentesco">Parentesco</label>
+              </div>
+            </div>
+            <span
+              class="help-block"
+              *ngIf="
+                !residenteControls.at(i).get('parentesco').valid &&
+                residenteControls.at(i).get('parentesco').touched
+              "
+            >
+              <span
+                class="form-text"
+                *ngIf="
+                  residenteControls.at(i).get('parentesco').errors['required']
+                "
+                >Insira o parentesco!</span
+              >
+            </span>
+          </div>
+          <div class="col-12 mt-2 mb-3">
+            <div class="input-group">
+              <span class="app-input-group-icon"
+                ><i class="bi bi-file-earmark-text"></i
+              ></span>
+              <div class="form-floating">
+                <input
+                  class="form-control"
+                  id="cpf"
+                  [formControl]="getControl(residente, 'cpf')"
+                  appCpfCnpjMask
+                  placeholder="cpf"
+                  maxlength="14"
+                  [ngClass]="{
+                    'is-invalid':
+                      !residenteControls.at(i).get('cpf').valid &&
+                      residenteControls.at(i).get('cpf').touched
+                  }"
+                />
+                <label for="cpf">CPF</label>
+              </div>
+            </div>
+            <span
+              class="help-block"
+              *ngIf="
+                !residenteControls.at(i).get('cpf').valid &&
+                residenteControls.at(i).get('cpf').touched
+              "
+            >
+              <span
+                class="form-text"
+                *ngIf="residenteControls.at(i).get('cpf').errors['required']"
+                >Insira o CPF!</span
+              >
+              <span
+                class="form-text"
+                *ngIf="residenteControls.at(i).get('cpf').errors['cpfInvalido']"
+                >Digite um CPF válido!</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a
+    style="cursor: pointer"
+    class="fw-semibold mt-1 link-offset-2 link-underline link-underline-opacity-0"
+    (click)="adicionaResidente()"
+  >
+    Adicionar Residente
+  </a>
+</div>

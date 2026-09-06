@@ -1,0 +1,204 @@
+
+prestacao {
+	prestacao_id integer pk increments
+	usuario_id integer *> usuario.usuario_id
+	curatelado_id integer > curatelado.curatelado_id
+	curador_id integer > curador.curador_id
+	numero_processo integer
+	situacao_prestacao_anterior string
+	tipo_interdicao string
+	motivo_interdicao string
+	data_termo date
+	data_inicial date
+	data_final date
+	reside_casa_repouso boolean
+	cep string
+	estado string
+	cidade string
+	bairro string
+	logradouro string
+	numero integer
+	complemento string
+}
+
+receita {
+	receita_id integer pk increments
+	prestacao_id integer *> prestacao.prestacao_id
+	data date
+	descricao string
+	valor decimal
+	receita_categoria_id integer *> receita_categoria.receita_categoria_id
+}
+
+curador {
+	curador_id integer pk increments
+	nome string
+	email string
+	cpf string
+	rg string
+	data_nascimento date
+	estado_civil string
+	cep string
+	estado string
+	cidade string
+	bairro string
+	logradouro string
+	numero integer
+	complemento string
+}
+
+curatelado {
+	curatelado_id integer pk increments
+	nome string
+	parentesco string
+	cpf string
+	rg string
+	estado_civil string
+	data_nascimento date
+	data_obito date
+}
+
+residente {
+	residente_id integer pk increments
+	prestacao_id integer *> prestacao.prestacao_id
+	nome string
+	parentesco string
+	cpf string
+}
+
+despesa {
+	despesa_id integer pk increments unique
+	prestacao_id integer *> prestacao.prestacao_id
+	descricao string
+	data date
+	valor decimal
+	despesa_categoria_id integer *> despesa_categoria.despesa_categoria_id
+	forma_pagamento integer
+	rateio decimal
+}
+
+receita_anexo {
+	receita_anexo_id integer pk increments unique
+	filename_user string
+	path string
+	hash string
+	receita_id integer *> receita.receita_id
+}
+
+despesa_categoria {
+	despesa_categoria_id integer pk increments unique
+	despesa_categoria string
+}
+
+usuario {
+	usuario_id integer pk increments unique
+	nome string
+	cpf string
+	email string
+	senha_hash string
+}
+
+sessao {
+	sessao_id integer pk increments unique
+	usuario_id integer *> usuario.usuario_id
+	token string
+	data_criacao timestamp
+}
+
+conta_bancaria {
+	conta_bancaria_id integer pk increments unique
+	prestacao_id integer *> prestacao.prestacao_id
+	instituicao_id integer *> instituicao_financeira.instituicao_id
+	conta_bancaria_categoria_id integer *> conta_bancaria_categoria.conta_bancaria_categoria_id
+	numero_conta string
+	digito_conta integer
+	numero_agencia string
+	digito_agencia integer
+	saldo_inicial decimal
+	saldo_final decimal
+	data_abertura date
+}
+
+instituicao_financeira {
+	instituicao_id integer pk increments unique
+	nome_instituicao string
+}
+
+conta_bancaria_anexo {
+	anexo_id integer pk increments unique
+	conta_bancaria_id integer *> conta_bancaria.conta_bancaria_id
+	data_inicial date
+	data_final integer
+	filename_user string
+	path string
+	hash string
+}
+
+despesa_anexo {
+	despesa_anexo_id integer pk increments unique
+	filename_user string
+	path string
+	hash string
+	despesa_id integer *> despesa.despesa_id
+}
+
+conta_bancaria_categoria {
+	conta_bancaria_categoria_id integer pk increments unique
+	conta_bancaria_categoria string
+}
+
+prestacao_anexo {
+	prestacao_anexo_id integer pk increments unique
+	prestacao_id integer *> prestacao.prestacao_id
+	prestacao_anexo_tipo_id integer *> prestacao_anexo_tipo.prestacao_anexo_tipo_id
+	filename_user string
+	path string
+	hash string
+}
+
+prestacao_anexo_tipo {
+	prestacao_anexo_tipo_id integer pk increments unique
+	prestacao_anexo_tipo string
+}
+
+patrimonio {
+	patrimonio_id integer pk increments unique
+	prestacao_id integer *> prestacao.prestacao_id
+	patrimonio_categoria_id integer *> patrimonio_categoria.patrimonio_categoria_id
+	patrimonio_tipo_id integer *> patrimonio_tipo.patrimonio_tipo_id
+	descricao string
+	data_inicial integer
+	data_final integer
+	valor_inicial integer
+}
+
+patrimonio_anexo {
+	patrimonio_anexo_id integer pk increments unique
+	patrimonio_id integer *> patrimonio.patrimonio_id
+	filename_user string
+	path string
+	hash string
+}
+
+patrimonio_tipo {
+	patrimonio_tipo_id integer pk increments unique
+	patrimonio_tipo string
+}
+
+patrimonio_categoria {
+	patrimonio_categoria_id integer pk increments unique
+	patrimonio_categoria string
+}
+
+sessao_blacklist {
+	sessao_blacklist_id integer pk increments unique
+	usuario_id integer *> usuario.usuario_id
+	access_token string
+	data_logout datetime
+}
+
+receita_categoria {
+	receita_categoria_id integer pk increments unique
+	receita_categoria string
+}
+

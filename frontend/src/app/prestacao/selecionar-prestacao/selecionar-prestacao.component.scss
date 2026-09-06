@@ -1,0 +1,37 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+.app-text-gray-800 {
+    color: $gray-800;
+}
+
+.app-bola {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0; // para não diminuir o tamanho da bolinha
+}
+
+.card-header {
+    border-bottom: 1px solid $gray-300;
+}
+
+.card {
+    transition: all 0.2s;
+}
+
+.card:hover {
+    scale: 0.98;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+// tira 3 pontinhos do dropdown
+.dropdown-toggle::after {
+    display: none;
+}
+
+.curatelado-nome:hover {
+    color: $purple-600;
+    --bs-dark-rgb: rgb(89, 53, 154) !important; // cor purple-600 em rgb para dropdown hover
+}
